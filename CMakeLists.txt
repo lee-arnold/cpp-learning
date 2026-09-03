@@ -9,4 +9,13 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
   "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
 )
 
-add_executable(hello ${SOURCES})
+add_executable(application ${SOURCES})
+
+target_compile_options(application PRIVATE
+  -Wall
+  -Wextra
+  -Wpedantic
+  -Wconversion
+  -Wsign-conversion
+  -Wunused-parameter
+)

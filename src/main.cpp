@@ -1,6 +1,7 @@
-#include <iostream>
+#include "./iostream.hpp"
 
 int main() {
-    std::cout << "Hello, C++!\n";
+    iostream();
+
     return 0;
 }
