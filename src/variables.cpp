@@ -10,7 +10,7 @@ int variables() {
 
     // newer forms of initialisation
     int d{10}; // direct list initialisation, disallows narrowing conversions
-    // int d{4.5}; // errors because double can't narrow to int
+    // int z{4.5}; // errors because double can't narrow to int
 
     int e{}; // value initialisation, initializes to zero for fundamental types
 
@@ -19,5 +19,16 @@ int variables() {
     std::cout << c;
     std::cout << d;
     std::cout << e;
+
+    // if we try and use an uninitialized variable, we get a warning in nvim
+    // and also a compiler warning when building
+    // int x;
+    // std::cout << x;
+
+    // c++ convention is camelCase or snake_case
+    // int value;
+    // int my_value;
+    // int anotherValue;
+
     return 0;
 }

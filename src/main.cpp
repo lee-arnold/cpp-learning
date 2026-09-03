@@ -1,7 +1,8 @@
-#include "./iostream.hpp"
+// #include "./iostream.hpp"
+#include "./multiply-by-two.hpp"
 
 int main() {
-    iostream();
+    multiply_by_two();
 
     return 0;
 }
