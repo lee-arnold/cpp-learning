@@ -7,9 +7,28 @@
 ## Setup
 
 - This repo contains an example of how to set up your environment
+- Install CMake and Ninja:
+
+  ```bash
+  brew install cmake ninja
+  ```
+
 - Ensure the `clangd` LSP is installed via Mason
 - Ensure `cpp` is added to Neovim Treesitter `ensure_installed` table
 
 ## Running
 
-- `./run` will build the executable using CMake and automatically run it
+Configure the project after cloning it:
+
+```bash
+cmake --preset dev
+```
+
+Then build and run the application:
+
+```bash
+./run
+```
+
+After the initial configuration, `./run` will rebuild the executable using
+CMake and automatically run it.
