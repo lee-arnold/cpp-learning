@@ -7,10 +7,10 @@
 ## Setup
 
 - This repo contains an example of how to set up your environment
-- Install CMake and Ninja:
+- Install CMake, Ninja and LLVM:
 
   ```bash
-  brew install cmake ninja
+  brew install cmake ninja llvm
   ```
 
 - Ensure the `clangd` LSP is installed via Mason
