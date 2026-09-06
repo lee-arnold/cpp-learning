@@ -1,5 +1,4 @@
 #include "iostream.h"
-// could also #include "./iostream.h"
 #include <iostream>
 
 int iostream() {
