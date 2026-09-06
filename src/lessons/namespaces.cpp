@@ -1,8 +1,8 @@
-// anything that is not defined inside a class, funcction or namespace is considered part of the global scope
-// therefore naming collisions can occur
+// anything that is not defined inside a class, funcction or namespace is considered part of the
+// global scope therefore naming collisions can occur
 
-// the below will cause a linker error, because get_value_from_user already exists in multiply_by_two
-// note that we're not even using this function for the linker to error
+// the below will cause a linker error, because get_value_from_user already exists in
+// multiply_by_two note that we're not even using this function for the linker to error
 
 // int get_value_from_user() {
 //     std::cout << "Enter an integer: " << std::endl;
