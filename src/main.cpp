@@ -1,5 +1,5 @@
-// #include "./lessons/iostream.h"
-#include "./lessons/multiply-by-two.h"
+// #include "iostream.h"
+#include "lessons/multiply/multiply-by-two.h"
 
 int main() {
     multiply_by_two();

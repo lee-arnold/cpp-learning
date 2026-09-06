@@ -20,3 +20,7 @@ target_compile_options(application PRIVATE
   -Wsign-conversion
   -Wunused-parameter
 )
+
+target_include_directories(application PRIVATE
+  "${CMAKE_CURRENT_SOURCE_DIR}/src"
+)
