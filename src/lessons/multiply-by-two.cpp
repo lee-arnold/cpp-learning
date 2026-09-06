@@ -1,4 +1,4 @@
-#include "./multiply-by-two.hpp"
+#include "./multiply-by-two.h"
 #include <iostream>
 
 int get_value_from_user() {
