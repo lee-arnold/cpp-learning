@@ -1,8 +1,7 @@
-// #include "iostream.h"
-#include "lessons/multiply/multiply-by-two.h"
+#include "lessons/chapter-quizzes/four.h"
 
 int main() {
-    multiply_by_two();
+    run();
 
     return 0;
 }
