@@ -1,7 +1,7 @@
-#include "lessons/chapter-quizzes/four.h"
+#include "lessons/constexpr.h"
 
 int main() {
-    run_quiz_4_question_3();
+    run_constexpr();
 
     return 0;
 }
