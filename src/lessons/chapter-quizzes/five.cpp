@@ -20,10 +20,10 @@ int get_age(std::string_view name) {
 }
 
 void run_quiz_5_question_4() {
-    std::string name1{get_name(1)};
-    int age1{get_age(name1)};
-    std::string name2{get_name(2)};
-    int age2{get_age(name2)};
+    const std::string name1{get_name(1)};
+    const int age1{get_age(name1)};
+    const std::string name2{get_name(2)};
+    const int age2{get_age(name2)};
 
     if (age1 > age2) {
         std::println("{} (age {}) is older than {} (age {}).", name1, age1, name2, age2);
