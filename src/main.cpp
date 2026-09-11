@@ -1,7 +1,7 @@
-#include "lessons/constexpr.h"
+#include "lessons/strings.h"
 
 int main() {
-    run_constexpr();
+    run_strings();
 
     return 0;
 }
