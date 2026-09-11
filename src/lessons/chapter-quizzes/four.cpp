@@ -61,7 +61,7 @@ void run_quiz_4_question_3() {
         double ball_height{height - fall_distance};
 
         if (ball_height < 0) {
-            std::println("At {} seconds, the ball is on the ground", t, ball_height);
+            std::println("At {} seconds, the ball is on the ground", t);
             return;
         }
 
