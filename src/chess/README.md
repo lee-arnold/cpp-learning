@@ -3,6 +3,9 @@
 Create a CLI based chess game. Implement the following:
 
 1. Representation of the board
+   - put the board in a 2d array (for now)
+   - print the board to the console
+   - add ability to move any piece anywhere
 2. Generate legal moves
 3. Store game state
 4. FEN parsing
