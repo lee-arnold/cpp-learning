@@ -5,3 +5,5 @@ AllowShortFunctionsOnASingleLine: None
 FixNamespaceComments: false
 SeparateDefinitionBlocks: Always
 WrapNamespaceBodyWithEmptyLines: Always
+KeepEmptyLines:
+  AtStartOfFile: false
