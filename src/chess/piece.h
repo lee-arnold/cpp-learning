@@ -19,4 +19,5 @@ class Piece {
     std::string_view icon_;
     Colour colour_;
 };
+
 }
