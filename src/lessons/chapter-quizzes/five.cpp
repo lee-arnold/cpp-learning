@@ -2,6 +2,7 @@
 #include <iostream>
 #include <print>
 #include <string>
+#include <string_view>
 
 std::string get_name(int num) {
     std::println("Enter the name of person #{}: ", num);

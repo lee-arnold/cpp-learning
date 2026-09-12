@@ -1,4 +1,7 @@
 #include "piece.h"
+#include "colour.h"
+
+#include <string_view>
 
 namespace chess {
 
