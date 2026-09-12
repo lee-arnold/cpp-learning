@@ -7,3 +7,4 @@ SeparateDefinitionBlocks: Always
 WrapNamespaceBodyWithEmptyLines: Always
 KeepEmptyLines:
   AtStartOfFile: false
+RemoveSemicolon: true
