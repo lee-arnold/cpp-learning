@@ -1,6 +1,5 @@
 #pragma once
 
-#include "chess/utils.h"
 #include "colour.h"
 
 namespace chess {
