@@ -1,5 +1,6 @@
 #pragma once
 
+#include "chess/piece_type.h"
 #include "colour.h"
 #include <string_view>
 
@@ -9,15 +10,17 @@ class Piece {
   public:
     std::string_view icon() const;
     Colour colour() const;
+    PieceType type() const;
 
   protected:
     // protected prevents creation of random pieces outside of classes that inherit
-    Piece(std::string_view icon, Colour colour);
+    Piece(std::string_view icon, Colour colour, PieceType type);
 
   private:
     // private prevents us from writing to these variables
     std::string_view icon_;
     Colour colour_;
+    PieceType type_;
 };
 
 }
