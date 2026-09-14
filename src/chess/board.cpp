@@ -7,6 +7,8 @@
 #include "chess/pieces/rook.h"
 #include "chess/utils.h"
 #include "colour.h"
+#include "piece.h"
+#include "position.h"
 
 #include <cstddef>
 #include <iostream>
@@ -81,6 +83,27 @@ void Board::print() const {
         }
         std::cout << '\n';
     }
+}
+
+// this duplication is annoying. it can be neatened up with decltype
+// but thats way too advanced for this simple project. maybe later
+
+std::unique_ptr<Piece> &Board::operator[](Position position) {
+    return board_[static_cast<std::size_t>(position.rank())]
+                 [static_cast<std::size_t>(position.file())];
+}
+
+const std::unique_ptr<Piece> &Board::operator[](Position position) const {
+    return board_[static_cast<std::size_t>(position.rank())]
+                 [static_cast<std::size_t>(position.file())];
+}
+
+std::unique_ptr<Piece> &Board::operator[](int rank, int file) {
+    return board_[static_cast<std::size_t>(rank)][static_cast<std::size_t>(file)];
+}
+
+const std::unique_ptr<Piece> &Board::operator[](int rank, int file) const {
+    return board_[static_cast<std::size_t>(rank)][static_cast<std::size_t>(file)];
 }
 
 }
