@@ -6,10 +6,16 @@ namespace chess {
 
 class Position {
   public:
-    constexpr Position(int rank, int file);
+    constexpr Position(int rank, int file) : rank_{rank}, file_{file} {
+    }
 
-    constexpr int rank() const;
-    constexpr int file() const;
+    constexpr int rank() const {
+        return rank_;
+    }
+
+    constexpr int file() const {
+        return file_;
+    }
 
     constexpr Colour squareColour() const;
 
