@@ -18,6 +18,21 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
 
 add_executable(application ${SOURCES})
 
+file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp"
+)
+
+add_custom_target(check_headers
+  COMMAND ${CMAKE_CXX_CLANG_TIDY}
+    -p "${CMAKE_CURRENT_BINARY_DIR}"
+    --extra-arg=-xc++-header
+    ${HEADERS}
+  COMMENT "Checking header includes with clang-tidy"
+  VERBATIM
+)
+add_dependencies(application check_headers)
+
 target_compile_options(application PRIVATE
   -Wall
   -Wextra
