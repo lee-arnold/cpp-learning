@@ -4,9 +4,10 @@
 #include <memory>
 
 #include "chess/pieces/piece.h"
-#include "chess/position.h"
 
 namespace chess {
+
+class Position;
 
 class Board {
   public:

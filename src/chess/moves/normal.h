@@ -1,10 +1,11 @@
 #pragma once
 
-#include "chess/board.h"
 #include "chess/moves/move.h"
-#include "chess/position.h"
 
 namespace chess {
+
+class Position;
+class Board;
 
 class NormalMove : public Move {
   public:
