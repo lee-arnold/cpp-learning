@@ -11,6 +11,7 @@ class Piece {
     std::string_view icon() const;
     Colour colour() const;
     PieceType type() const;
+    virtual ~Piece() = default;
 
   protected:
     // protected prevents creation of random pieces outside of classes that inherit
