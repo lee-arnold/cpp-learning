@@ -6,9 +6,9 @@
 
 namespace chess {
 
-class Normal : public Move {
+class NormalMove : public Move {
   public:
-    Normal(Position from, Position to);
+    NormalMove(Position from, Position to);
     void execute(Board &board) const override;
 };
 

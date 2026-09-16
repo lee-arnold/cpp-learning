@@ -8,10 +8,10 @@
 
 namespace chess {
 
-Normal::Normal(Position from, Position to) : Move{MoveType::Normal, from, to} {
+NormalMove::NormalMove(Position from, Position to) : Move{MoveType::Normal, from, to} {
 }
 
-void Normal::execute(Board &board) const {
+void NormalMove::execute(Board &board) const {
     board[to()] = std::move(board[from()]);
     // piece.hasMoved = true
 }
