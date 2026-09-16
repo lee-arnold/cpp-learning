@@ -1,6 +1,7 @@
 #pragma once
 
 #include "chess/colour.h"
+#include "chess/utils.h"
 
 namespace chess {
 
@@ -17,7 +18,9 @@ class Position {
         return file_;
     }
 
-    constexpr Colour squareColour() const;
+    constexpr Colour squareColour() const {
+        return is_even(rank_ + file_) ? Colour::Black : Colour::White;
+    }
 
     // this tells c++ to check the object members are the same and does the default equality
     // compare this position against another existing position without copying or modifying either
