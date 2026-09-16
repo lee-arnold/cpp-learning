@@ -9,11 +9,11 @@ class Direction {
     }
 
     constexpr static Direction North() {
-        return Direction{-1, 0};
+        return Direction{1, 0};
     }
 
     constexpr static Direction South() {
-        return Direction{1, 0};
+        return Direction{-1, 0};
     }
 
     constexpr static Direction East() {
