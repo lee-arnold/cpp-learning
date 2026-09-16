@@ -2,7 +2,7 @@
 
 namespace chess {
 
-enum Colour {
+enum class Colour {
     White,
     Black,
 };
