@@ -1,8 +1,8 @@
 #pragma once
 
 #include "chess/board.h"
-#include "move_type.h"
-#include "position.h"
+#include "chess/moves/move_type.h"
+#include "chess/position.h"
 
 namespace chess {
 

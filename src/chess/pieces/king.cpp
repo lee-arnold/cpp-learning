@@ -1,7 +1,7 @@
-#include "king.h"
+#include "chess/pieces/king.h"
 #include "chess/colour.h"
-#include "chess/piece.h"
-#include "chess/piece_type.h"
+#include "chess/pieces/piece.h"
+#include "chess/pieces/piece_type.h"
 
 namespace chess {
 

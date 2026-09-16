@@ -1,6 +1,6 @@
-#include "position.h"
-#include "colour.h"
-#include "utils.h"
+#include "chess/position.h"
+#include "chess/colour.h"
+#include "chess/utils.h"
 
 namespace chess {
 

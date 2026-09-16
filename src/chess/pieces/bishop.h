@@ -1,7 +1,7 @@
 #pragma once
 
 #include "chess/colour.h"
-#include "chess/piece.h"
+#include "chess/pieces/piece.h"
 
 namespace chess {
 

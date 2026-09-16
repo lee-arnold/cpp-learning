@@ -3,8 +3,8 @@
 #include <array>
 #include <memory>
 
+#include "chess/pieces/piece.h"
 #include "chess/position.h"
-#include "piece.h"
 
 namespace chess {
 

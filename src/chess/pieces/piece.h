@@ -1,7 +1,7 @@
 #pragma once
 
-#include "chess/piece_type.h"
-#include "colour.h"
+#include "chess/colour.h"
+#include "chess/pieces/piece_type.h"
 #include <string_view>
 
 namespace chess {

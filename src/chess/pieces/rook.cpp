@@ -1,7 +1,7 @@
-#include "rook.h"
+#include "chess/pieces/rook.h"
 #include "chess/colour.h"
-#include "chess/piece.h"
-#include "chess/piece_type.h"
+#include "chess/pieces/piece.h"
+#include "chess/pieces/piece_type.h"
 
 namespace chess {
 

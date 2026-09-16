@@ -1,14 +1,14 @@
-#include "board.h"
+#include "chess/board.h"
+#include "chess/colour.h"
 #include "chess/pieces/bishop.h"
 #include "chess/pieces/king.h"
 #include "chess/pieces/knight.h"
 #include "chess/pieces/pawn.h"
+#include "chess/pieces/piece.h"
 #include "chess/pieces/queen.h"
 #include "chess/pieces/rook.h"
+#include "chess/position.h"
 #include "chess/utils.h"
-#include "colour.h"
-#include "piece.h"
-#include "position.h"
 
 #include <cstddef>
 #include <iostream>
