@@ -13,10 +13,11 @@ void BoardPrinter::print() const {
     constexpr auto DARK_SQUARE = "\x1b[48;2;115;149;82m";
     constexpr auto RESET = "\x1b[0m";
     constexpr auto EMPTY_CHAR = "  ";
+    constexpr auto FILE_LABELS = "  a b c d e f g h";
 
-    std::println("Printing the board:");
-
+    std::println("{}", FILE_LABELS);
     for (int rank = board_.dimension(); rank-- > 0;) {
+        std::print("{} ", rank + 1);
         for (int file = 0; file < board_.dimension(); ++file) {
             const auto background = chess::is_even(rank + file) ? DARK_SQUARE : LIGHT_SQUARE;
 
@@ -31,8 +32,9 @@ void BoardPrinter::print() const {
 
             std::cout << RESET;
         }
-        std::cout << '\n';
+        std::println(" {}", rank + 1);
     }
+    std::println("{}", FILE_LABELS);
 }
 
 }
