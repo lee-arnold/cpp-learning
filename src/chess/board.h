@@ -12,15 +12,17 @@ class Position;
 class Board {
   public:
     Board();
-    // const so that we know print isn't modifying anything on the object it was called on
-    void print() const;
+
+    constexpr int dimension() const {
+        return static_cast<int>(board_.size());
+    }
 
     // both a const and non const version, one for setting one for reading
     // the compiler chooses which based on whether the board itself is const
+    std::array<std::unique_ptr<Piece>, 8> &operator[](int rank);
+    const std::array<std::unique_ptr<Piece>, 8> &operator[](int rank) const;
     std::unique_ptr<Piece> &operator[](Position position);
     const std::unique_ptr<Piece> &operator[](Position position) const;
-    std::unique_ptr<Piece> &operator[](int rank, int file);
-    const std::unique_ptr<Piece> &operator[](int rank, int file) const;
 
   private:
     void initialise();

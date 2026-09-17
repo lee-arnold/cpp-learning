@@ -8,12 +8,10 @@
 #include "chess/pieces/queen.h"
 #include "chess/pieces/rook.h"
 #include "chess/position.h"
-#include "chess/utils.h"
 
+#include <array>
 #include <cstddef>
-#include <iostream>
 #include <memory>
-#include <print>
 
 namespace chess {
 
@@ -58,35 +56,16 @@ void Board::initialise() {
     board_[7][4] = std::make_unique<King>(Colour::Black);
 }
 
-void Board::print() const {
-    constexpr auto PIECE_COLOUR = "\x1b[38;2;38;36;33m";
-    constexpr auto LIGHT_SQUARE = "\x1b[48;2;235;236;208m";
-    constexpr auto DARK_SQUARE = "\x1b[48;2;115;149;82m";
-    constexpr auto RESET = "\x1b[0m";
-    constexpr auto EMPTY_CHAR = "  ";
-
-    std::println("Printing the board:");
-
-    for (std::size_t rank = board_.size(); rank-- > 0;) {
-        for (std::size_t file = 0; file < board_[rank].size(); ++file) {
-            const auto background = is_even(rank + file) ? DARK_SQUARE : LIGHT_SQUARE;
-
-            std::cout << background;
-
-            if (board_[rank][file]) {
-                std::cout << PIECE_COLOUR << board_[rank][file]->icon() << ' ';
-            } else {
-                std::cout << EMPTY_CHAR;
-            }
-
-            std::cout << RESET;
-        }
-        std::cout << '\n';
-    }
-}
-
 // this duplication is annoying. it can be neatened up with decltype
 // but thats way too advanced for this simple project. maybe later
+
+std::array<std::unique_ptr<Piece>, 8> &Board::operator[](int rank) {
+    return board_[static_cast<std::size_t>(rank)];
+}
+
+const std::array<std::unique_ptr<Piece>, 8> &Board::operator[](int rank) const {
+    return board_[static_cast<std::size_t>(rank)];
+}
 
 std::unique_ptr<Piece> &Board::operator[](Position position) {
     return board_[static_cast<std::size_t>(position.rank())]
@@ -96,14 +75,6 @@ std::unique_ptr<Piece> &Board::operator[](Position position) {
 const std::unique_ptr<Piece> &Board::operator[](Position position) const {
     return board_[static_cast<std::size_t>(position.rank())]
                  [static_cast<std::size_t>(position.file())];
-}
-
-std::unique_ptr<Piece> &Board::operator[](int rank, int file) {
-    return board_[static_cast<std::size_t>(rank)][static_cast<std::size_t>(file)];
-}
-
-const std::unique_ptr<Piece> &Board::operator[](int rank, int file) const {
-    return board_[static_cast<std::size_t>(rank)][static_cast<std::size_t>(file)];
 }
 
 }
