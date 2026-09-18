@@ -41,6 +41,7 @@ target_compile_options(application PRIVATE
   -Wsign-conversion
   -Wunused-parameter
   -Wshadow
+  -Wmissing-prototypes
 )
 
 target_include_directories(application PRIVATE
