@@ -1,6 +1,7 @@
 #pragma once
 
 #include "chess/position.h"
+#include <optional>
 
 namespace terminal {
 
@@ -9,6 +10,6 @@ struct RequestedMove {
     chess::Position to;
 };
 
-RequestedMove get_move_from_user();
+std::optional<RequestedMove> get_move_from_user();
 
 }

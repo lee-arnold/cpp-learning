@@ -15,7 +15,9 @@ int main() {
 
         auto requested_move = terminal::get_move_from_user();
 
-        auto move{chess::NormalMove{requested_move.from, requested_move.to}};
+        if (!requested_move) break;
+
+        auto move{chess::NormalMove{requested_move->from, requested_move->to}};
 
         move.execute(board);
     }
