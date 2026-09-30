@@ -8,3 +8,4 @@ WrapNamespaceBodyWithEmptyLines: Always
 KeepEmptyLines:
   AtStartOfFile: false
 RemoveSemicolon: true
+AllowShortIfStatementsOnASingleLine: WithoutElse
