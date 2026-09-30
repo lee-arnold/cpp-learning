@@ -1,5 +1,20 @@
-cmake_minimum_required(VERSION 3.24)
+cmake_minimum_required(VERSION 3.28)
 project(cpp_learning LANGUAGES CXX)
+
+include(FetchContent)
+
+set(SFML_BUILD_AUDIO OFF CACHE BOOL "" FORCE)
+set(SFML_BUILD_NETWORK OFF CACHE BOOL "" FORCE)
+
+FetchContent_Declare(SFML
+  GIT_REPOSITORY https://github.com/SFML/SFML.git
+  GIT_TAG 3.1.0
+  GIT_SHALLOW ON
+  EXCLUDE_FROM_ALL
+  SYSTEM
+)
+
+FetchContent_MakeAvailable(SFML)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -17,6 +32,7 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
 )
 
 add_executable(application ${SOURCES})
+target_link_libraries(application PRIVATE SFML::Graphics)
 
 file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS
   "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
@@ -27,6 +43,7 @@ add_custom_target(check_headers
   COMMAND ${CMAKE_CXX_CLANG_TIDY}
     -p "${CMAKE_CURRENT_BINARY_DIR}"
     --extra-arg=-xc++-header
+    --extra-arg=-std=c++23
     ${HEADERS}
   COMMENT "Checking header includes with clang-tidy"
   VERBATIM
