@@ -2,16 +2,23 @@
 #include "chess/moves/normal.h"
 #include "chess/position.h"
 #include "terminal/board_printer.h"
+#include "terminal/clear.h"
+#include "terminal/input.h"
 
 int main() {
     chess::Board board{};
     terminal::BoardPrinter printer{board};
 
-    auto move{chess::NormalMove{chess::Position{1, 1}, chess::Position{3, 1}}};
+    while (true) {
+        terminal::clear();
+        printer.print();
 
-    move.execute(board);
+        auto requested_move = terminal::get_move_from_user();
 
-    printer.print();
+        auto move{chess::NormalMove{requested_move.from, requested_move.to}};
+
+        move.execute(board);
+    }
 
     return 0;
 }
