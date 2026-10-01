@@ -9,3 +9,6 @@ KeepEmptyLines:
   AtStartOfFile: false
 RemoveSemicolon: true
 AllowShortIfStatementsOnASingleLine: WithoutElse
+AlignAfterOpenBracket: BlockIndent
+BinPackArguments: false
+AllowAllArgumentsOnNextLine: false
