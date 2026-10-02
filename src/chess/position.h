@@ -2,6 +2,7 @@
 
 #include "chess/colour.h"
 #include "chess/utils.h"
+#include <format>
 
 namespace chess {
 
@@ -32,3 +33,15 @@ class Position {
 };
 
 }
+
+template <>
+
+struct std::formatter<chess::Position> {
+    constexpr auto parse(std::format_parse_context &ctx) {
+        return ctx.begin();
+    }
+
+    auto format(const chess::Position &obj, std::format_context &ctx) const {
+        return std::format_to(ctx.out(), "rank: {} | file: {}", obj.rank(), obj.file());
+    }
+};
