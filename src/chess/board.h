@@ -17,8 +17,9 @@ class Board {
     }
 
     constexpr static bool is_inside(Position position) {
-        return position.file() < 0 || position.file() > 7 || position.rank() < 0 ||
-               position.rank() > 7;
+        return !(
+            position.file() < 0 || position.file() > 7 || position.rank() < 0 || position.rank() > 7
+        );
     }
 
     // both a const and non const version, one for setting one for reading
