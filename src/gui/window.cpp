@@ -11,10 +11,32 @@
 #include <SFML/Window/VideoMode.hpp>
 #include <SFML/Window/WindowEnums.hpp>
 #include <algorithm>
+#include <array>
 #include <optional>
+#include <string_view>
 
 namespace {
 
+struct TextureAsset {
+    chess::PieceType type;
+    chess::Colour colour;
+    std::string_view filename;
+};
+
+constexpr std::array assets = {
+    TextureAsset{chess::PieceType::Pawn, chess::Colour::White, "assets/PawnW.png"},
+    TextureAsset{chess::PieceType::Pawn, chess::Colour::Black, "assets/PawnB.png"},
+    TextureAsset{chess::PieceType::Knight, chess::Colour::White, "assets/KnightW.png"},
+    TextureAsset{chess::PieceType::Knight, chess::Colour::Black, "assets/KnightB.png"},
+    TextureAsset{chess::PieceType::Bishop, chess::Colour::White, "assets/BishopW.png"},
+    TextureAsset{chess::PieceType::Bishop, chess::Colour::Black, "assets/BishopB.png"},
+    TextureAsset{chess::PieceType::Rook, chess::Colour::White, "assets/RookW.png"},
+    TextureAsset{chess::PieceType::Rook, chess::Colour::Black, "assets/RookB.png"},
+    TextureAsset{chess::PieceType::Queen, chess::Colour::White, "assets/QueenW.png"},
+    TextureAsset{chess::PieceType::Queen, chess::Colour::Black, "assets/QueenB.png"},
+    TextureAsset{chess::PieceType::King, chess::Colour::White, "assets/KingW.png"},
+    TextureAsset{chess::PieceType::King, chess::Colour::Black, "assets/KingB.png"},
+};
 constexpr auto light = sf::Color{235, 236, 208};
 constexpr auto dark = sf::Color{115, 149, 82};
 constexpr auto square_size = 100.0f;
@@ -36,54 +58,9 @@ Window::Window(const chess::Board &board)
       board_{board} {
     window_.setFramerateLimit(60);
 
-    textures_.try_emplace(
-        TextureKey{chess::PieceType::Pawn, chess::Colour::White},
-        "assets/PawnW.png"
-    );
-    textures_.try_emplace(
-        TextureKey{chess::PieceType::Pawn, chess::Colour::Black},
-        "assets/PawnB.png"
-    );
-    textures_.try_emplace(
-        TextureKey{chess::PieceType::Knight, chess::Colour::White},
-        "assets/KnightW.png"
-    );
-    textures_.try_emplace(
-        TextureKey{chess::PieceType::Knight, chess::Colour::Black},
-        "assets/KnightB.png"
-    );
-    textures_.try_emplace(
-        TextureKey{chess::PieceType::Bishop, chess::Colour::White},
-        "assets/BishopW.png"
-    );
-    textures_.try_emplace(
-        TextureKey{chess::PieceType::Bishop, chess::Colour::Black},
-        "assets/BishopB.png"
-    );
-    textures_.try_emplace(
-        TextureKey{chess::PieceType::Rook, chess::Colour::White},
-        "assets/RookW.png"
-    );
-    textures_.try_emplace(
-        TextureKey{chess::PieceType::Rook, chess::Colour::Black},
-        "assets/RookB.png"
-    );
-    textures_.try_emplace(
-        TextureKey{chess::PieceType::Queen, chess::Colour::White},
-        "assets/QueenW.png"
-    );
-    textures_.try_emplace(
-        TextureKey{chess::PieceType::Queen, chess::Colour::Black},
-        "assets/QueenB.png"
-    );
-    textures_.try_emplace(
-        TextureKey{chess::PieceType::King, chess::Colour::White},
-        "assets/KingW.png"
-    );
-    textures_.try_emplace(
-        TextureKey{chess::PieceType::King, chess::Colour::Black},
-        "assets/KingB.png"
-    );
+    for (const auto &asset : assets) {
+        textures_.try_emplace(TextureKey{asset.type, asset.colour}, asset.filename);
+    }
 }
 
 bool Window::is_open() const {
