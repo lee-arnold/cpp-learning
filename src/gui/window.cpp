@@ -41,12 +41,22 @@ constexpr auto light = sf::Color{235, 236, 208};
 constexpr auto dark = sf::Color{115, 149, 82};
 constexpr auto square_size = 100.0f;
 constexpr auto icon_size = square_size * 0.8f;
+const auto active_square_outline = 2.0f;
 
 sf::Vector2f square_position(chess::Position position, const chess::Board &board) {
     auto x = square_size * static_cast<float>(position.file());
     auto y = static_cast<float>(board.dimension() - 1 - position.rank()) * square_size;
 
     return sf::Vector2f{x, y};
+}
+
+chess::Position to_position(int mouse_x, int mouse_y) {
+    auto square = static_cast<int>(square_size);
+
+    auto file = mouse_x / square;
+    auto rank = 7 - (mouse_y / square);
+
+    return chess::Position{rank, file};
 }
 
 }
@@ -74,8 +84,11 @@ void Window::clear() {
 void Window::draw() {
     for (int rank = board_.dimension(); rank-- > 0;) {
         for (int file = 0; file < board_.dimension(); ++file) {
-            draw_square(chess::Position{rank, file});
-            draw_piece(chess::Position{rank, file});
+            auto position = chess::Position{rank, file};
+
+            draw_square(position);
+            draw_piece(position);
+            if (position == active_square_) draw_active_square(position);
         }
     }
 
@@ -118,10 +131,43 @@ void Window::draw_piece(chess::Position position) {
     window_.draw(sprite);
 }
 
-void Window::process_events() {
+void Window::draw_active_square(chess::Position position) {
+    auto rect = sf::RectangleShape{};
+    rect.setSize(sf::Vector2f(square_size, square_size));
+
+    auto square_pos = square_position(position, board_);
+
+    rect.setFillColor(sf::Color::Transparent);
+    rect.setOutlineThickness(-active_square_outline);
+    rect.setOutlineColor(sf::Color::Red);
+    rect.setPosition(square_pos);
+    window_.draw(rect);
+}
+
+std::optional<RequestedMove> Window::process_events() {
     while (const std::optional event = window_.pollEvent()) {
         if (event->is<sf::Event::Closed>()) window_.close();
+        if (const auto *mouse = event->getIf<sf::Event::MouseButtonReleased>()) {
+            if (mouse->position.x < 0 || mouse->position.y < 0) continue;
+
+            auto from = active_square_;
+            auto to = to_position(mouse->position.x, mouse->position.y);
+
+            if (!chess::Board::is_inside(to)) continue;
+
+            active_square_ = to;
+
+            if (from) {
+                active_square_ = std::nullopt;
+                return RequestedMove{
+                    .from = *from,
+                    .to = to,
+                };
+            }
+        }
     }
+
+    return std::nullopt;
 }
 
 }

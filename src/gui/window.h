@@ -7,16 +7,22 @@
 #include "gui/texture.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <map>
+#include <optional>
 #include <utility>
 
 namespace gui {
+
+struct RequestedMove {
+    chess::Position from;
+    chess::Position to;
+};
 
 class Window {
   public:
     Window(const chess::Board &board);
     void clear();
     void draw();
-    void process_events();
+    std::optional<RequestedMove> process_events();
     bool is_open() const;
 
   private:
@@ -26,6 +32,8 @@ class Window {
     std::map<TextureKey, Texture> textures_;
     void draw_square(chess::Position position);
     void draw_piece(chess::Position position);
+    void draw_active_square(chess::Position position);
+    std::optional<chess::Position> active_square_;
 };
 
 }
