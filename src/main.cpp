@@ -10,9 +10,13 @@ int main() {
         gui::Window window{board};
 
         while (window.is_open()) {
-            window.process_events();
-
+            auto requested_move = window.process_events();
             if (!window.is_open()) break;
+
+            if (requested_move) {
+                auto move{chess::NormalMove{requested_move->from, requested_move->to}};
+                move.execute(board);
+            }
 
             window.clear();
             window.draw();
