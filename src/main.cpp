@@ -1,19 +1,26 @@
 #include "chess/board.h"
 #include "chess/moves/normal.h"
 #include "gui/window.h"
+#include <exception>
+#include <iostream>
 
 int main() {
-    chess::Board board{};
-    gui::Window window{board};
+    try {
+        chess::Board board{};
+        gui::Window window{board};
 
-    while (window.is_open()) {
-        window.process_events();
+        while (window.is_open()) {
+            window.process_events();
 
-        if (!window.is_open()) break;
+            if (!window.is_open()) break;
 
-        window.clear();
-        window.draw();
+            window.clear();
+            window.draw();
+        }
+
+        return 0;
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << "\n";
+        return 1;
     }
-
-    return 0;
 }
