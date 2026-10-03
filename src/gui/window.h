@@ -2,13 +2,16 @@
 
 #include "chess/board.h"
 #include "chess/colour.h"
+#include "chess/moves/move.h"
 #include "chess/pieces/piece_type.h"
 #include "chess/position.h"
 #include "gui/texture.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <map>
+#include <memory>
 #include <optional>
 #include <utility>
+#include <vector>
 
 namespace gui {
 
@@ -24,16 +27,23 @@ class Window {
     void draw();
     std::optional<RequestedMove> process_events();
     bool is_open() const;
+    void set_move_highlights(std::vector<std::unique_ptr<chess::Move>> moves);
+    std::optional<chess::Position> selected_square() const;
 
   private:
     sf::RenderWindow window_;
     const chess::Board &board_;
     using TextureKey = std::pair<chess::PieceType, chess::Colour>;
     std::map<TextureKey, Texture> textures_;
+
+    std::optional<chess::Position> selected_square_;
+    std::vector<chess::Position> move_highlights_;
+
     void draw_square(chess::Position position);
     void draw_piece(chess::Position position);
-    void draw_active_square(chess::Position position);
-    std::optional<chess::Position> active_square_;
+    void draw_selected_square(chess::Position position);
+    void draw_move_highlights(chess::Position position);
+    void clear_move_highlights();
 };
 
 }

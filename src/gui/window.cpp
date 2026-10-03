@@ -1,6 +1,7 @@
 #include "window.h"
 #include "chess/board.h"
 #include "chess/colour.h"
+#include "chess/moves/move.h"
 #include "chess/pieces/piece_type.h"
 #include "chess/position.h"
 #include <SFML/Graphics/Color.hpp>
@@ -12,8 +13,10 @@
 #include <SFML/Window/WindowEnums.hpp>
 #include <algorithm>
 #include <array>
+#include <memory>
 #include <optional>
 #include <string_view>
+#include <vector>
 
 namespace {
 
@@ -41,7 +44,7 @@ constexpr auto light = sf::Color{235, 236, 208};
 constexpr auto dark = sf::Color{115, 149, 82};
 constexpr auto square_size = 100.0f;
 constexpr auto icon_size = square_size * 0.8f;
-const auto active_square_outline = 2.0f;
+const auto selected_square_outline = 2.0f;
 
 sf::Vector2f square_position(chess::Position position, const chess::Board &board) {
     auto x = square_size * static_cast<float>(position.file());
@@ -88,7 +91,10 @@ void Window::draw() {
 
             draw_square(position);
             draw_piece(position);
-            if (position == active_square_) draw_active_square(position);
+            if (position == selected_square_) draw_selected_square(position);
+            if (std::ranges::find(move_highlights_, position) != move_highlights_.end()) {
+                draw_move_highlights(position);
+            }
         }
     }
 
@@ -107,8 +113,9 @@ void Window::draw_square(chess::Position position) {
 }
 
 void Window::draw_piece(chess::Position position) {
+    if (board_.is_empty(position)) return;
+
     auto &piece = board_[position];
-    if (!piece) return;
 
     auto sprite = textures_.at(TextureKey{piece->type(), piece->colour()}).get_sprite();
     auto sprite_bounds = sprite.getLocalBounds();
@@ -131,17 +138,46 @@ void Window::draw_piece(chess::Position position) {
     window_.draw(sprite);
 }
 
-void Window::draw_active_square(chess::Position position) {
+void Window::draw_selected_square(chess::Position position) {
     auto rect = sf::RectangleShape{};
     rect.setSize(sf::Vector2f(square_size, square_size));
 
     auto square_pos = square_position(position, board_);
 
     rect.setFillColor(sf::Color::Transparent);
-    rect.setOutlineThickness(-active_square_outline);
+    rect.setOutlineThickness(-selected_square_outline);
     rect.setOutlineColor(sf::Color::Red);
     rect.setPosition(square_pos);
     window_.draw(rect);
+}
+
+void Window::draw_move_highlights(chess::Position position) {
+    auto rect = sf::RectangleShape{};
+    rect.setSize(sf::Vector2f(square_size, square_size));
+
+    auto square_pos = square_position(position, board_);
+
+    rect.setFillColor(sf::Color::Transparent);
+    rect.setOutlineThickness(-selected_square_outline);
+    rect.setOutlineColor(sf::Color::Blue);
+    rect.setPosition(square_pos);
+    window_.draw(rect);
+}
+
+std::optional<chess::Position> Window::selected_square() const {
+    return selected_square_;
+}
+
+void Window::set_move_highlights(std::vector<std::unique_ptr<chess::Move>> moves) {
+    move_highlights_.reserve(moves.size());
+
+    for (const auto &move : moves) {
+        move_highlights_.push_back(move->to());
+    }
+}
+
+void Window::clear_move_highlights() {
+    move_highlights_.clear();
 }
 
 std::optional<RequestedMove> Window::process_events() {
@@ -149,19 +185,24 @@ std::optional<RequestedMove> Window::process_events() {
         if (event->is<sf::Event::Closed>()) window_.close();
         if (const auto *mouse = event->getIf<sf::Event::MouseButtonReleased>()) {
             if (mouse->position.x < 0 || mouse->position.y < 0) continue;
+            auto clicked_position = to_position(mouse->position.x, mouse->position.y);
+            if (!chess::Board::is_inside(clicked_position)) continue;
 
-            auto from = active_square_;
-            auto to = to_position(mouse->position.x, mouse->position.y);
+            // selecting a piece
+            if (!selected_square_ && !board_.is_empty(clicked_position)) {
+                selected_square_ = clicked_position;
+                continue;
+            }
 
-            if (!chess::Board::is_inside(to)) continue;
+            // selecting a move
+            if (selected_square_) {
+                auto from = selected_square_;
+                selected_square_ = std::nullopt;
+                clear_move_highlights();
 
-            active_square_ = to;
-
-            if (from) {
-                active_square_ = std::nullopt;
                 return RequestedMove{
                     .from = *from,
-                    .to = to,
+                    .to = clicked_position,
                 };
             }
         }
