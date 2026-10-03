@@ -15,4 +15,12 @@ PieceType Piece::type() const {
     return type_;
 }
 
+bool Piece::has_moved() const {
+    return has_moved_;
+}
+
+void Piece::set_has_moved() {
+    has_moved_ = true;
+}
+
 }
