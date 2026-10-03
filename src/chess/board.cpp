@@ -77,4 +77,12 @@ const std::unique_ptr<Piece> &Board::operator[](Position position) const {
                  [static_cast<std::size_t>(position.file())];
 }
 
+bool Board::is_empty(Position position) const {
+    // we can't do board_[position] here because that refers to the array, but our position
+    // overloard is on Board
+    // Instead, we can use `this` to access the current object, but we need to access (dereference)
+    // the pointer that this points to in order to use our overload
+    return !(*this)[position];
+}
+
 }

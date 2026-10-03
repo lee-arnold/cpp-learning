@@ -22,6 +22,8 @@ class Board {
         );
     }
 
+    bool is_empty(Position position) const;
+
     // both a const and non const version, one for setting one for reading
     // the compiler chooses which based on whether the board itself is const
     std::array<std::unique_ptr<Piece>, 8> &operator[](int rank);
