@@ -12,3 +12,4 @@ AllowShortIfStatementsOnASingleLine: WithoutElse
 AlignAfterOpenBracket: BlockIndent
 BinPackArguments: false
 AllowAllArgumentsOnNextLine: false
+PenaltyReturnTypeOnItsOwnLine: 1000000 # keep return type with function name
