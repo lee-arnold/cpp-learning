@@ -34,6 +34,20 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
 add_executable(application ${SOURCES})
 target_link_libraries(application PRIVATE SFML::Graphics)
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  target_link_directories(application PRIVATE
+    "/home/linuxbrew/.linuxbrew/opt/llvm/lib"
+  )
+
+  set_target_properties(application PROPERTIES
+    BUILD_RPATH "/home/linuxbrew/.linuxbrew/opt/llvm/lib"
+  )
+  target_link_options(application PRIVATE
+    "SHELL:-Wl,--push-state,--no-as-needed -lgcc_s -Wl,--pop-state"
+  )
+endif()
+
+
 file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS
   "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp"
