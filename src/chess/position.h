@@ -1,6 +1,7 @@
 #pragma once
 
 #include "chess/colour.h"
+#include "chess/direction.h"
 #include "chess/utils.h"
 #include <format>
 
@@ -26,6 +27,10 @@ class Position {
     // this tells c++ to check the object members are the same and does the default equality
     // compare this position against another existing position without copying or modifying either
     constexpr bool operator==(const Position &) const = default;
+
+    constexpr Position operator+(const Direction &direction) {
+        return Position{rank() + direction.rank_delta(), file() + direction.file_delta()};
+    }
 
   private:
     int rank_;
