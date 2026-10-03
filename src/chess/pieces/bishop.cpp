@@ -5,8 +5,7 @@
 
 namespace chess {
 
-Bishop::Bishop(Colour colour)
-    : Piece{colour == Colour::White ? "♗" : "♝", colour, PieceType::Bishop} {
+Bishop::Bishop(Colour colour) : Piece{colour, PieceType::Bishop} {
 }
 
 }

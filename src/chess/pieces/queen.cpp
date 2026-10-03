@@ -5,7 +5,7 @@
 
 namespace chess {
 
-Queen::Queen(Colour colour) : Piece{colour == Colour::White ? "♕" : "♛", colour, PieceType::Queen} {
+Queen::Queen(Colour colour) : Piece{colour, PieceType::Queen} {
 }
 
 }

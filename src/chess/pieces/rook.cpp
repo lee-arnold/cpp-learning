@@ -5,7 +5,7 @@
 
 namespace chess {
 
-Rook::Rook(Colour colour) : Piece{colour == Colour::White ? "♖" : "♜", colour, PieceType::Rook} {
+Rook::Rook(Colour colour) : Piece{colour, PieceType::Rook} {
 }
 
 }

@@ -5,7 +5,7 @@
 
 namespace chess {
 
-Pawn::Pawn(Colour colour) : Piece{colour == Colour::White ? "♙" : "♟", colour, PieceType::Pawn} {
+Pawn::Pawn(Colour colour) : Piece{colour, PieceType::Pawn} {
 }
 
 }
