@@ -25,7 +25,7 @@ int main() {
             }
 
             if (requested_move) {
-                auto legal_moves = game_state.legal_moves_for_piece(*selected_square);
+                auto legal_moves = game_state.legal_moves_for_piece(requested_move->from);
                 std::vector<chess::Position> legal_moves_to{};
 
                 legal_moves_to.reserve(legal_moves.size());
