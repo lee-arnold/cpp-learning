@@ -12,8 +12,10 @@ NormalMove::NormalMove(Position from, Position to) : Move{MoveType::Normal, from
 }
 
 void NormalMove::execute(Board &board) const {
+    auto &piece = board[from()];
+
+    piece->set_has_moved();
     board[to()] = std::move(board[from()]);
-    // piece.hasMoved = true
 }
 
 }
