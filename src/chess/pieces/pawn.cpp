@@ -37,6 +37,8 @@ std::vector<std::unique_ptr<Move>> Pawn::get_forward_moves(
 
     if (can_move_to(one_forward, board)) {
         moves.push_back(std::make_unique<NormalMove>(position, one_forward));
+    } else {
+        return moves;
     }
 
     auto two_forward = one_forward + forward_;
