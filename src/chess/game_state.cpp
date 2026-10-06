@@ -11,7 +11,9 @@ GameState::GameState(const Board &board) : board_{board} {
 }
 
 std::vector<std::unique_ptr<Move>> GameState::legal_moves_for_piece(const Position position) {
-    if (board_.is_empty(position)) return std::vector<std::unique_ptr<Move>>{};
+    if (!board_.is_inside(position) || board_.is_empty(position)) {
+        return std::vector<std::unique_ptr<Move>>{};
+    }
 
     auto &piece = board_[position];
 

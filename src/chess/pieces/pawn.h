@@ -28,7 +28,7 @@ class Pawn : public Piece {
     ) const;
 
     constexpr static bool can_move_to(Position position, const Board &board) {
-        return board.is_empty(position) && board.is_inside(position);
+        return board.is_inside(position) && board.is_empty(position);
     }
 };
 
