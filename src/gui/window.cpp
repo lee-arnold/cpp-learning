@@ -168,13 +168,8 @@ std::optional<chess::Position> Window::selected_square() const {
     return selected_square_;
 }
 
-void Window::set_move_highlights(std::vector<std::unique_ptr<chess::Move>> moves) {
-    clear_move_highlights();
-    move_highlights_.reserve(moves.size());
-
-    for (const auto &move : moves) {
-        move_highlights_.push_back(move->to());
-    }
+void Window::set_move_highlights(const std::vector<chess::Position> &positions) {
+    move_highlights_ = positions;
 }
 
 void Window::clear_move_highlights() {

@@ -7,6 +7,7 @@
 #include <exception>
 #include <iostream>
 #include <memory>
+#include <ranges>
 #include <vector>
 
 int main() {
@@ -22,7 +23,13 @@ int main() {
             auto selected_square = window.selected_square();
 
             if (selected_square) {
-                window.set_move_highlights(game_state.available_moves_for_piece(*selected_square));
+                auto highlight_moves = game_state.available_moves_for_piece(*selected_square);
+                auto positions =
+                    highlight_moves |
+                    std::views::transform([](const auto &move) { return move->to(); }) |
+                    std::ranges::to<std::vector>();
+
+                window.set_move_highlights(positions);
             }
 
             if (requested_move) {

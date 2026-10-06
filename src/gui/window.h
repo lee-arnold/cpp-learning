@@ -8,7 +8,6 @@
 #include "gui/texture.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <map>
-#include <memory>
 #include <optional>
 #include <utility>
 #include <vector>
@@ -27,7 +26,7 @@ class Window {
     void draw();
     std::optional<RequestedMove> process_events();
     bool is_open() const;
-    void set_move_highlights(std::vector<std::unique_ptr<chess::Move>> moves);
+    void set_move_highlights(const std::vector<chess::Position> &positions);
     std::optional<chess::Position> selected_square() const;
 
   private:
