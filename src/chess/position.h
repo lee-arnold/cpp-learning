@@ -28,7 +28,7 @@ class Position {
     // compare this position against another existing position without copying or modifying either
     constexpr bool operator==(const Position &) const = default;
 
-    constexpr Position operator+(const Direction &direction) {
+    constexpr Position operator+(const Direction &direction) const {
         return Position{rank() + direction.rank_delta(), file() + direction.file_delta()};
     }
 

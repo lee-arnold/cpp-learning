@@ -8,11 +8,11 @@ class Direction {
         : rank_delta_{rank_delta}, file_delta_{file_delta} {
     }
 
-    int rank_delta() const {
+    constexpr int rank_delta() const {
         return rank_delta_;
     }
 
-    int file_delta() const {
+    constexpr int file_delta() const {
         return file_delta_;
     }
 
