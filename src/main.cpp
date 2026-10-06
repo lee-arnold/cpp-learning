@@ -7,6 +7,7 @@
 #include <exception>
 #include <iostream>
 #include <memory>
+#include <optional>
 #include <ranges>
 #include <vector>
 
@@ -15,22 +16,25 @@ int main() {
         chess::Board board{};
         chess::GameState game_state{board};
         gui::Window window{board};
+        std::optional<chess::Position> last_selected_square{};
 
         while (window.is_open()) {
-            auto requested_move = window.process_events();
+            const auto requested_move = window.process_events();
             if (!window.is_open()) break;
 
-            auto selected_square = window.selected_square();
+            const auto selected_square = window.selected_square();
 
-            if (selected_square) {
-                auto highlight_moves = game_state.available_moves_for_piece(*selected_square);
-                auto positions =
+            if (selected_square && selected_square != last_selected_square) {
+                const auto highlight_moves = game_state.available_moves_for_piece(*selected_square);
+                const auto positions =
                     highlight_moves |
                     std::views::transform([](const auto &move) { return move->to(); }) |
                     std::ranges::to<std::vector>();
 
                 window.set_move_highlights(positions);
             }
+
+            last_selected_square = selected_square;
 
             if (requested_move) {
                 auto available_moves = game_state.available_moves_for_piece(requested_move->from);
