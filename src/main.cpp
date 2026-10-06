@@ -22,19 +22,19 @@ int main() {
             auto selected_square = window.selected_square();
 
             if (selected_square) {
-                window.set_move_highlights(game_state.legal_moves_for_piece(*selected_square));
+                window.set_move_highlights(game_state.available_moves_for_piece(*selected_square));
             }
 
             if (requested_move) {
-                auto legal_moves = game_state.legal_moves_for_piece(requested_move->from);
+                auto available_moves = game_state.available_moves_for_piece(requested_move->from);
 
                 const auto matches_destination = [&requested_move](const auto &move) {
                     return move->to() == requested_move->to;
                 };
 
-                auto move = std::ranges::find_if(legal_moves, matches_destination);
+                auto move = std::ranges::find_if(available_moves, matches_destination);
 
-                if (move != legal_moves.end()) {
+                if (move != available_moves.end()) {
                     (*move)->execute(board);
                 }
             }

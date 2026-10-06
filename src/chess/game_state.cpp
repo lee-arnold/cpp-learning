@@ -10,14 +10,14 @@ namespace chess {
 GameState::GameState(const Board &board) : board_{board} {
 }
 
-std::vector<std::unique_ptr<Move>> GameState::legal_moves_for_piece(const Position position) {
+std::vector<std::unique_ptr<Move>> GameState::available_moves_for_piece(const Position position) {
     if (!board_.is_inside(position) || board_.is_empty(position)) {
         return std::vector<std::unique_ptr<Move>>{};
     }
 
     auto &piece = board_[position];
 
-    // filter illegal moves here later
+    // TODO: filter out moves that leave our king in check
     return piece->get_moves(position, board_);
 }
 
