@@ -1,11 +1,12 @@
 #include "chess/board.h"
 #include "chess/game_state.h"
-#include "chess/moves/normal.h"
+#include "chess/moves/move.h"
 #include "chess/position.h"
 #include "gui/window.h"
 #include <algorithm>
 #include <exception>
 #include <iostream>
+#include <memory>
 #include <vector>
 
 int main() {
@@ -26,17 +27,15 @@ int main() {
 
             if (requested_move) {
                 auto legal_moves = game_state.legal_moves_for_piece(requested_move->from);
-                std::vector<chess::Position> legal_moves_to{};
 
-                legal_moves_to.reserve(legal_moves.size());
+                const auto matches_destination = [&requested_move](const auto &move) {
+                    return move->to() == requested_move->to;
+                };
 
-                for (const auto &move : legal_moves) {
-                    legal_moves_to.push_back(move->to());
-                }
+                auto move = std::ranges::find_if(legal_moves, matches_destination);
 
-                if (std::ranges::find(legal_moves_to, requested_move->to) != legal_moves_to.end()) {
-                    auto move{chess::NormalMove{requested_move->from, requested_move->to}};
-                    move.execute(board);
+                if (move != legal_moves.end()) {
+                    (*move)->execute(board);
                 }
             }
 
