@@ -1,7 +1,5 @@
 #include "chess/board.h"
 #include "chess/game_state.h"
-#include "chess/moves/move.h"
-#include "chess/position.h"
 
 #include "helpers/moves.h"
 #include "helpers/squares.h"
@@ -9,8 +7,6 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include <algorithm>
-#include <memory>
-#include <vector>
 
 using namespace test_squares;
 
@@ -18,12 +14,7 @@ TEST_CASE("An unmoved pawn with a clear path can advance one or two squares") {
     const chess::Board board;
     const chess::GameState game{board};
 
-    const auto moves = game.available_moves_for_piece(a2);
-
-    std::vector<chess::Position> destinations;
-    for (const auto &move : moves) {
-        destinations.push_back(move->to());
-    }
+    const auto destinations = get_destinations_for_piece(game, a2);
 
     REQUIRE(destinations.size() == 2);
     REQUIRE(std::ranges::find(destinations, a3) != destinations.end());
@@ -36,12 +27,7 @@ TEST_CASE("A previously moved pawn with a clear path can advance only one square
 
     relocate_piece(board, a2, a3, true);
 
-    const auto moves = game.available_moves_for_piece(a3);
-
-    std::vector<chess::Position> destinations;
-    for (const auto &move : moves) {
-        destinations.push_back(move->to());
-    }
+    const auto destinations = get_destinations_for_piece(game, a3);
 
     REQUIRE(destinations.size() == 1);
     REQUIRE(std::ranges::find(destinations, a4) != destinations.end());
@@ -59,11 +45,25 @@ TEST_CASE("A friendly piece immediately ahead prevents all pawn forward moves") 
 }
 
 TEST_CASE("An enemy piece immediately ahead prevents all pawn forward moves") {
-    SKIP("Not implemented yet");
+    chess::Board board;
+    const chess::GameState game{board};
+
+    relocate_piece(board, b7, a3);
+
+    const auto moves = game.available_moves_for_piece(a2);
+
+    REQUIRE(moves.empty());
 }
 
 TEST_CASE("A friendly piece two squares ahead allows only the one-square pawn advance") {
-    SKIP("Not implemented yet");
+    chess::Board board;
+    const chess::GameState game{board};
+
+    relocate_piece(board, b2, a4);
+    const auto destinations = get_destinations_for_piece(game, a2);
+
+    REQUIRE(destinations.size() == 1);
+    REQUIRE(std::ranges::find(destinations, a3) != destinations.end());
 }
 
 TEST_CASE("An enemy piece two squares ahead allows only the one-square pawn advance") {
