@@ -12,3 +12,5 @@ void relocate_piece(
 std::vector<chess::Position> get_destinations_for_piece(
     const chess::GameState &game, const chess::Position from
 );
+
+void clear_piece(chess::Board &board, chess::Position position);

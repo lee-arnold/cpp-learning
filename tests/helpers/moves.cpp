@@ -34,3 +34,9 @@ std::vector<chess::Position> get_destinations_for_piece(
 
     return destinations;
 }
+
+void clear_piece(chess::Board &board, chess::Position position) {
+    REQUIRE(chess::Board::is_inside(position));
+    REQUIRE(!board.is_empty(position));
+    board[position] = nullptr;
+}
