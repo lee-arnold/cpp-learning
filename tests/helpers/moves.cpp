@@ -35,6 +35,19 @@ std::vector<chess::Position> get_destinations_for_piece(
     return destinations;
 }
 
+std::vector<chess::Position> get_source_positions_for_piece(
+    const chess::GameState &game, const chess::Position from
+) {
+    const auto moves = game.available_moves_for_piece(from);
+
+    std::vector<chess::Position> sources;
+    for (const auto &move : moves) {
+        sources.push_back(move->from());
+    }
+
+    return sources;
+}
+
 void clear_piece(chess::Board &board, chess::Position position) {
     REQUIRE(chess::Board::is_inside(position));
     REQUIRE(!board.is_empty(position));
