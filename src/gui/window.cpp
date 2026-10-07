@@ -12,7 +12,6 @@
 #include <SFML/Window/WindowEnums.hpp>
 #include <algorithm>
 #include <array>
-#include <memory>
 #include <optional>
 #include <string_view>
 #include <vector>
