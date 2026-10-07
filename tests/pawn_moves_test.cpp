@@ -10,7 +10,7 @@
 
 using namespace test_squares;
 
-TEST_CASE("An unmoved pawn with a clear path can advance one or two squares") {
+TEST_CASE("An unmoved white pawn with a clear path can advance one or two squares") {
     const chess::Board board;
     const chess::GameState game{board};
 
@@ -19,6 +19,17 @@ TEST_CASE("An unmoved pawn with a clear path can advance one or two squares") {
     REQUIRE(destinations.size() == 2);
     REQUIRE(std::ranges::find(destinations, a3) != destinations.end());
     REQUIRE(std::ranges::find(destinations, a4) != destinations.end());
+}
+
+TEST_CASE("An unmoved black pawn with a clear path can advance one or two squares") {
+    const chess::Board board;
+    const chess::GameState game{board};
+
+    const auto destinations = get_destinations_for_piece(game, a7);
+
+    REQUIRE(destinations.size() == 2);
+    REQUIRE(std::ranges::find(destinations, a6) != destinations.end());
+    REQUIRE(std::ranges::find(destinations, a5) != destinations.end());
 }
 
 TEST_CASE("A previously moved pawn with a clear path can advance only one square") {
@@ -67,35 +78,42 @@ TEST_CASE("A friendly piece two squares ahead allows only the one-square pawn ad
 }
 
 TEST_CASE("An enemy piece two squares ahead allows only the one-square pawn advance") {
-    SKIP("Not implemented yet");
-}
+    chess::Board board;
+    const chess::GameState game{board};
 
-TEST_CASE("An unmoved white pawn with a clear path advances toward increasing ranks") {
-    SKIP("Not implemented yet");
-}
+    relocate_piece(board, b7, a4);
+    const auto destinations = get_destinations_for_piece(game, a2);
 
-TEST_CASE("An unmoved black pawn with a clear path advances toward decreasing ranks") {
-    SKIP("Not implemented yet");
-}
-
-TEST_CASE("A white pawn on the final rank has no forward moves") {
-    SKIP("Not implemented yet");
-}
-
-TEST_CASE("A black pawn on the final rank has no forward moves") {
-    SKIP("Not implemented yet");
+    REQUIRE(destinations.size() == 1);
+    REQUIRE(std::ranges::find(destinations, a3) != destinations.end());
 }
 
 TEST_CASE(
     "An unmoved white pawn one rank from the edge has only an in-bounds one-square destination"
 ) {
-    SKIP("Not implemented yet");
+    chess::Board board;
+    const chess::GameState game{board};
+
+    clear_piece(board, a8);
+    relocate_piece(board, a2, a7);
+    const auto destinations = get_destinations_for_piece(game, a7);
+
+    REQUIRE(destinations.size() == 1);
+    REQUIRE(std::ranges::find(destinations, a8) != destinations.end());
 }
 
 TEST_CASE(
     "An unmoved black pawn one rank from the edge has only an in-bounds one-square destination"
 ) {
-    SKIP("Not implemented yet");
+    chess::Board board;
+    const chess::GameState game{board};
+
+    clear_piece(board, a1);
+    relocate_piece(board, a7, a2);
+    const auto destinations = get_destinations_for_piece(game, a2);
+
+    REQUIRE(destinations.size() == 1);
+    REQUIRE(std::ranges::find(destinations, a1) != destinations.end());
 }
 
 TEST_CASE("Pawns on the a-file and h-file advance without changing files") {
