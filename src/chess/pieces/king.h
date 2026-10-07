@@ -11,7 +11,7 @@ namespace chess {
 
 class King : public Piece {
   public:
-    King(Colour colour);
+    explicit King(Colour colour);
     std::vector<std::unique_ptr<Move>> get_moves(
         Position position, const Board &board
     ) const override;

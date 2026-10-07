@@ -25,7 +25,7 @@ class Piece {
     Piece(Colour colour, PieceType type);
 
   private:
-    // private prevents us from writing to these variables
+    // private prevents us from writing to these variables from outside of this class
     Colour colour_;
     PieceType type_;
     bool has_moved_{false};

@@ -10,8 +10,8 @@ namespace chess {
 
 class GameState {
   public:
-    GameState(const Board &board);
-    std::vector<std::unique_ptr<Move>> available_moves_for_piece(const Position position);
+    explicit GameState(const Board &board);
+    std::vector<std::unique_ptr<Move>> available_moves_for_piece(const Position position) const;
 
   private:
     const Board &board_;

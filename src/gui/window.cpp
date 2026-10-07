@@ -1,7 +1,6 @@
 #include "window.h"
 #include "chess/board.h"
 #include "chess/colour.h"
-#include "chess/moves/move.h"
 #include "chess/pieces/piece_type.h"
 #include "chess/position.h"
 #include <SFML/Graphics/Color.hpp>

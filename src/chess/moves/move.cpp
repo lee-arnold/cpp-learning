@@ -19,8 +19,4 @@ MoveType Move::type() const {
     return type_;
 }
 
-bool Move::is_legal() const {
-    return false;
-}
-
 }

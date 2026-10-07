@@ -13,7 +13,7 @@ namespace chess {
 
 class Pawn : public Piece {
   public:
-    Pawn(Colour colour);
+    explicit Pawn(Colour colour);
     std::vector<std::unique_ptr<Move>> get_moves(
         Position position, const Board &board
     ) const override;
@@ -26,10 +26,6 @@ class Pawn : public Piece {
     std::vector<std::unique_ptr<Move>> get_diagonal_moves(
         Position position, const Board &board
     ) const;
-
-    constexpr static bool can_move_to(Position position, const Board &board) {
-        return board.is_inside(position) && board.is_empty(position);
-    }
 };
 
 }

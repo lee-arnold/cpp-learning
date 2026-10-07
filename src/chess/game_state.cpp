@@ -10,7 +10,9 @@ namespace chess {
 GameState::GameState(const Board &board) : board_{board} {
 }
 
-std::vector<std::unique_ptr<Move>> GameState::available_moves_for_piece(const Position position) {
+std::vector<std::unique_ptr<Move>> GameState::available_moves_for_piece(
+    const Position position
+) const {
     if (!board_.is_inside(position) || board_.is_empty(position)) {
         return std::vector<std::unique_ptr<Move>>{};
     }

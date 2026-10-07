@@ -11,7 +11,7 @@ namespace chess {
 
 class Bishop : public Piece {
   public:
-    Bishop(Colour colour);
+    explicit Bishop(Colour colour);
     std::vector<std::unique_ptr<Move>> get_moves(
         Position position, const Board &board
     ) const override;

@@ -2,7 +2,6 @@
 
 #include "chess/board.h"
 #include "chess/colour.h"
-#include "chess/moves/move.h"
 #include "chess/pieces/piece_type.h"
 #include "chess/position.h"
 #include "gui/texture.h"
@@ -21,7 +20,7 @@ struct RequestedMove {
 
 class Window {
   public:
-    Window(const chess::Board &board);
+    explicit Window(const chess::Board &board);
     void clear();
     void draw();
     std::optional<RequestedMove> process_events();
