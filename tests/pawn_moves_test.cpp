@@ -25,11 +25,11 @@ TEST_CASE("An unmoved black pawn with a clear path can advance one or two square
     const chess::Board board;
     const chess::GameState game{board};
 
-    const auto destinations = get_destinations_for_piece(game, a7);
+    const auto destinations = get_destinations_for_piece(game, h7);
 
     REQUIRE(destinations.size() == 2);
-    REQUIRE(std::ranges::find(destinations, a6) != destinations.end());
-    REQUIRE(std::ranges::find(destinations, a5) != destinations.end());
+    REQUIRE(std::ranges::find(destinations, h6) != destinations.end());
+    REQUIRE(std::ranges::find(destinations, h5) != destinations.end());
 }
 
 TEST_CASE("A previously moved pawn with a clear path can advance only one square") {
@@ -116,12 +116,16 @@ TEST_CASE(
     REQUIRE(std::ranges::find(destinations, a1) != destinations.end());
 }
 
-TEST_CASE("Pawns on the a-file and h-file advance without changing files") {
-    SKIP("Not implemented yet");
-}
+TEST_CASE("Moves generated for a pawn start at the pawn's current square") {
+    chess::Board board;
+    const chess::GameState game{board};
 
-TEST_CASE("Every generated pawn move records the queried square as its source") {
-    SKIP("Not implemented yet");
+    const auto source_positions = get_source_positions_for_piece(game, a2);
+
+    REQUIRE(!source_positions.empty());
+    REQUIRE(std::ranges::all_of(source_positions, [](const auto &position) {
+        return position == a2;
+    }));
 }
 
 TEST_CASE("Querying pawn moves leaves the board and the pawn moved-state unchanged") {
