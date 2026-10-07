@@ -1,8 +1,10 @@
 #include "chess/board.h"
 #include "chess/game_state.h"
 #include "chess/moves/move.h"
-#include "chess/moves/normal.h"
 #include "chess/position.h"
+
+#include "helpers/moves.h"
+#include "helpers/squares.h"
 
 #include <catch2/catch_test_macros.hpp>
 
@@ -10,13 +12,11 @@
 #include <memory>
 #include <vector>
 
+using namespace test_squares;
+
 TEST_CASE("An unmoved pawn with a clear path can advance one or two squares") {
     const chess::Board board;
     const chess::GameState game{board};
-
-    const chess::Position a2{1, 0};
-    const chess::Position a3{2, 0};
-    const chess::Position a4{3, 0};
 
     const auto moves = game.available_moves_for_piece(a2);
 
@@ -34,12 +34,7 @@ TEST_CASE("A previously moved pawn with a clear path can advance only one square
     chess::Board board;
     const chess::GameState game{board};
 
-    const chess::Position a2{1, 0};
-    const chess::Position a3{2, 0};
-    const chess::Position a4{3, 0};
-
-    const chess::NormalMove first_move{a2, a3};
-    first_move.execute(board);
+    relocate_piece(board, a2, a3, true);
 
     const auto moves = game.available_moves_for_piece(a3);
 
@@ -53,7 +48,14 @@ TEST_CASE("A previously moved pawn with a clear path can advance only one square
 }
 
 TEST_CASE("A friendly piece immediately ahead prevents all pawn forward moves") {
-    SKIP("Not implemented yet");
+    chess::Board board;
+    const chess::GameState game{board};
+
+    relocate_piece(board, b2, a3);
+
+    const auto moves = game.available_moves_for_piece(a2);
+
+    REQUIRE(moves.empty());
 }
 
 TEST_CASE("An enemy piece immediately ahead prevents all pawn forward moves") {
