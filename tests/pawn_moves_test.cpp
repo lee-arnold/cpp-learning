@@ -1,6 +1,6 @@
 #include "chess/board.h"
 #include "chess/game_state.h"
-
+#include "chess/position.h"
 #include "helpers/moves.h"
 #include "helpers/squares.h"
 
@@ -128,20 +128,73 @@ TEST_CASE("Moves generated for a pawn start at the pawn's current square") {
     }));
 }
 
-TEST_CASE("Querying pawn moves leaves the board and the pawn moved-state unchanged") {
-    SKIP("Not implemented yet");
+TEST_CASE("Querying pawn moves leaves the pawn and its forward squares unchanged.") {
+    const chess::Board board;
+    const chess::GameState game{board};
+
+    auto a2_ptr = board[a2].get();
+    auto a3_ptr = board[a3].get();
+    auto a4_ptr = board[a4].get();
+
+    get_destinations_for_piece(game, a2);
+
+    REQUIRE(a2_ptr == board[a2].get());
+    REQUIRE(!a2_ptr->has_moved());
+    REQUIRE(a3_ptr == board[a3].get());
+    REQUIRE(a4_ptr == board[a4].get());
 }
 
 TEST_CASE(
     "Repeated queries on an unchanged board return the same pawn destinations without duplicates"
 ) {
-    SKIP("Not implemented yet");
+    const chess::Board board;
+    const chess::GameState game{board};
+
+    auto destinations = get_destinations_for_piece(game, a2);
+
+    REQUIRE(destinations.size() == 2);
+    REQUIRE(std::ranges::find(destinations, a3) != destinations.end());
+    REQUIRE(std::ranges::find(destinations, a4) != destinations.end());
+
+    destinations = get_destinations_for_piece(game, a2);
+
+    REQUIRE(destinations.size() == 2);
+    REQUIRE(std::ranges::find(destinations, a3) != destinations.end());
+    REQUIRE(std::ranges::find(destinations, a4) != destinations.end());
+
+    destinations = get_destinations_for_piece(game, a2);
+
+    REQUIRE(destinations.size() == 2);
+    REQUIRE(std::ranges::find(destinations, a3) != destinations.end());
+    REQUIRE(std::ranges::find(destinations, a4) != destinations.end());
 }
 
 TEST_CASE("Querying an empty square returns no available moves") {
-    SKIP("Not implemented yet");
+    chess::Board board;
+    const chess::GameState game{board};
+
+    const auto moves = game.available_moves_for_piece(a4);
+
+    REQUIRE(moves.empty());
 }
 
 TEST_CASE("Querying a position beyond any board edge returns no available moves") {
-    SKIP("Not implemented yet");
+    chess::Board board;
+    const chess::GameState game{board};
+
+    auto moves = game.available_moves_for_piece(chess::Position{-1, 1});
+
+    REQUIRE(moves.empty());
+
+    moves = game.available_moves_for_piece(chess::Position{1, -1});
+
+    REQUIRE(moves.empty());
+
+    moves = game.available_moves_for_piece(chess::Position{8, 1});
+
+    REQUIRE(moves.empty());
+
+    moves = game.available_moves_for_piece(chess::Position{1, 8});
+
+    REQUIRE(moves.empty());
 }
