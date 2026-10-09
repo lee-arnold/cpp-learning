@@ -56,6 +56,20 @@ set(CMAKE_CXX_CLANG_TIDY
   --warnings-as-errors=misc-include-cleaner
 )
 
+# Homebrew clang-tidy does not automatically inherit Apple Clang's SDK path.
+# Supply it explicitly so standalone header checks can find macOS and libc++ headers.
+if(APPLE)
+  execute_process(
+    COMMAND xcrun --show-sdk-path
+    OUTPUT_VARIABLE MACOS_SDK_PATH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    COMMAND_ERROR_IS_FATAL ANY
+  )
+  list(APPEND CMAKE_CXX_CLANG_TIDY
+    "--extra-arg-before=--sysroot=${MACOS_SDK_PATH}"
+  )
+endif()
+
 # Collect chess implementation files recursively into CHESS_SOURCES.
 # CONFIGURE_DEPENDS asks the build system to detect additions/removals and reconfigure.
 # CMAKE_CURRENT_SOURCE_DIR is the directory containing this CMakeLists.txt.
