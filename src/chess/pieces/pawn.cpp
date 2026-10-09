@@ -35,7 +35,7 @@ std::vector<std::unique_ptr<Move>> Pawn::get_forward_moves(
 
     auto one_forward = position + forward_;
 
-    if (board.is_empty(one_forward)) {
+    if (board.is_inside(one_forward) && board.is_empty(one_forward)) {
         moves.push_back(std::make_unique<NormalMove>(position, one_forward));
     } else {
         return moves;
@@ -43,7 +43,7 @@ std::vector<std::unique_ptr<Move>> Pawn::get_forward_moves(
 
     auto two_forward = one_forward + forward_;
 
-    if (!this->has_moved() && board.is_empty(two_forward)) {
+    if (!this->has_moved() && board.is_inside(two_forward) && board.is_empty(two_forward)) {
         moves.push_back(std::make_unique<NormalMove>(position, two_forward));
     }
 

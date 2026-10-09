@@ -82,7 +82,7 @@ bool Board::is_empty(Position position) const {
     // overloard is on Board
     // Instead, we can use `this` to access the current object, but we need to access (dereference)
     // the pointer that this points to in order to use our overload
-    return is_inside(position) && !(*this)[position];
+    return !(*this)[position];
 }
 
 }

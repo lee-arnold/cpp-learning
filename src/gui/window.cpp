@@ -111,7 +111,7 @@ void Window::draw_square(chess::Position position) {
 }
 
 void Window::draw_piece(chess::Position position) {
-    if (board_.is_empty(position)) return;
+    if (!board_.is_inside(position) || board_.is_empty(position)) return;
 
     auto &piece = board_[position];
 
