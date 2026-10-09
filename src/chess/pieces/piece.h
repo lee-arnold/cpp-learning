@@ -1,6 +1,7 @@
 #pragma once
 
 #include "chess/colour.h"
+#include "chess/direction.h"
 #include "chess/moves/move.h"
 #include "chess/pieces/piece_type.h"
 #include "chess/position.h"
@@ -29,6 +30,12 @@ class Piece {
     Colour colour_;
     PieceType type_;
     bool has_moved_{false};
+    std::vector<std::unique_ptr<Move>> get_moves_in_direction(
+        const Position position, const Board &board, const Direction direction
+    );
+    std::vector<std::unique_ptr<Move>> get_moves_in_directions(
+        const Position position, const Board &board, const std::vector<Direction> direction
+    );
 };
 
 }

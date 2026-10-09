@@ -1,6 +1,7 @@
 #pragma once
 
 #include "chess/colour.h"
+#include "chess/direction.h"
 #include "chess/moves/move.h"
 #include "chess/pieces/piece.h"
 #include "chess/position.h"
@@ -15,6 +16,9 @@ class Bishop : public Piece {
     std::vector<std::unique_ptr<Move>> get_moves(
         Position position, const Board &board
     ) const override;
+
+  private:
+    std::vector<Direction> directions_;
 };
 
 }

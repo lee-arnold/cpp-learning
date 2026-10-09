@@ -1,6 +1,7 @@
 #include "chess/pieces/bishop.h"
 #include "chess/board.h"
 #include "chess/colour.h"
+#include "chess/direction.h"
 #include "chess/moves/move.h"
 #include "chess/pieces/piece.h"
 #include "chess/pieces/piece_type.h"
@@ -10,7 +11,13 @@
 
 namespace chess {
 
-Bishop::Bishop(Colour colour) : Piece{colour, PieceType::Bishop} {
+Bishop::Bishop(Colour colour)
+    : Piece{colour, PieceType::Bishop}, directions_{std::vector<Direction>{
+                                            Direction::NorthWest(),
+                                            Direction::NorthEast(),
+                                            Direction::SouthWest(),
+                                            Direction::SouthEast(),
+                                        }} {
 }
 
 std::vector<std::unique_ptr<Move>> Bishop::get_moves(
