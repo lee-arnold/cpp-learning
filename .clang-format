@@ -1,15 +1,16 @@
-BasedOnStyle: LLVM
-IndentWidth: 4
-ColumnLimit: 100
-AllowShortFunctionsOnASingleLine: None
-FixNamespaceComments: false
-SeparateDefinitionBlocks: Always
-WrapNamespaceBodyWithEmptyLines: Always
-KeepEmptyLines:
-  AtStartOfFile: false
-RemoveSemicolon: true
-AllowShortIfStatementsOnASingleLine: WithoutElse
-AlignAfterOpenBracket: BlockIndent
-BinPackArguments: false
-AllowAllArgumentsOnNextLine: false
-PenaltyReturnTypeOnItsOwnLine: 1000000 # keep return type with function name
+BasedOnStyle: LLVM # use LLVM defaults for options not specified here
+IndentWidth: 4 # use four spaces per indentation level
+ColumnLimit: 100 # aim to keep lines within 100 columns
+AllowShortFunctionsOnASingleLine: None # always expand function bodies onto multiple lines
+FixNamespaceComments: false # do not add or fix namespace closing comments
+SeparateDefinitionBlocks: Always # separate definitions with blank lines
+WrapNamespaceBodyWithEmptyLines: Always # add blank lines inside namespace boundaries
+KeepEmptyLines: # control where existing blank lines are preserved
+  AtStartOfFile: false # remove blank lines before the first line of code
+RemoveSemicolon: true # remove redundant semicolons after function definitions
+AllowShortIfStatementsOnASingleLine: WithoutElse # allow short if statements on one line when there is no else
+AlignAfterOpenBracket: BlockIndent # indent wrapped arguments as a block and put the closing bracket on its own line
+BinPackArguments: false # put arguments on separate lines when a call wraps
+AllowAllArgumentsOnNextLine: false # do not move all arguments together onto the next line of a wrapped call
+PenaltyReturnTypeOnItsOwnLine: 1000000 # strongly prefer keeping the return type with the function name
+PackConstructorInitializers: Never # put each constructor initializer on its own line
