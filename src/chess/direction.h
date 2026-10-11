@@ -5,7 +5,8 @@ namespace chess {
 class Direction {
   public:
     constexpr Direction(int rank_delta, int file_delta)
-        : rank_delta_{rank_delta}, file_delta_{file_delta} {
+        : rank_delta_{rank_delta},
+          file_delta_{file_delta} {
     }
 
     constexpr int rank_delta() const {
@@ -50,6 +51,10 @@ class Direction {
 
     constexpr Direction operator+(Direction direction) const {
         return Direction{rank_delta_ + direction.rank_delta_, file_delta_ + direction.file_delta_};
+    }
+
+    constexpr Direction operator*(int scalar) const {
+        return Direction{rank_delta_ * scalar, file_delta_ * scalar};
     }
 
   private:
