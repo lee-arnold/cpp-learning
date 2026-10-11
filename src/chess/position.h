@@ -9,7 +9,9 @@ namespace chess {
 
 class Position {
   public:
-    constexpr Position(int rank, int file) : rank_{rank}, file_{file} {
+    constexpr Position(int rank, int file)
+        : rank_{rank},
+          file_{file} {
     }
 
     constexpr int rank() const {
@@ -28,14 +30,22 @@ class Position {
     // compare this position against another existing position without copying or modifying either
     constexpr bool operator==(const Position &) const = default;
 
-    constexpr Position operator+(const Direction &direction) const {
-        return Position{rank() + direction.rank_delta(), file() + direction.file_delta()};
+    constexpr Position &operator+=(const Direction &direction) {
+        rank_ += direction.rank_delta();
+        file_ += direction.file_delta();
+
+        return *this;
     }
 
   private:
     int rank_;
     int file_;
 };
+
+constexpr Position operator+(Position position, const Direction &direction) {
+    position += direction;
+    return position;
+}
 
 }
 
