@@ -12,18 +12,19 @@
 namespace chess {
 
 Bishop::Bishop(Colour colour)
-    : Piece{colour, PieceType::Bishop}, directions_{std::vector<Direction>{
-                                            Direction::NorthWest(),
-                                            Direction::NorthEast(),
-                                            Direction::SouthWest(),
-                                            Direction::SouthEast(),
-                                        }} {
+    : Piece{colour, PieceType::Bishop},
+      directions_{std::vector<Direction>{
+          Direction::NorthWest(),
+          Direction::NorthEast(),
+          Direction::SouthWest(),
+          Direction::SouthEast(),
+      }} {
 }
 
 std::vector<std::unique_ptr<Move>> Bishop::get_moves(
-    Position position [[maybe_unused]], const Board &board [[maybe_unused]]
+    const Position position, const Board &board
 ) const {
-    return std::vector<std::unique_ptr<Move>>{};
+    return get_moves_in_directions(position, board, directions_);
 }
 
 }

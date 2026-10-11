@@ -24,6 +24,12 @@ class Piece {
   protected:
     // protected prevents creation of random pieces outside of classes that inherit
     Piece(Colour colour, PieceType type);
+    std::vector<std::unique_ptr<Move>> get_moves_in_direction(
+        const Position position, const Board &board, const Direction &direction
+    ) const;
+    std::vector<std::unique_ptr<Move>> get_moves_in_directions(
+        const Position position, const Board &board, const std::vector<Direction> &direction
+    ) const;
 
   private:
     // private prevents us from writing to these variables from outside of this class
