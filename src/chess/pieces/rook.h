@@ -13,9 +13,7 @@ namespace chess {
 class Rook : public Piece {
   public:
     explicit Rook(Colour colour);
-    std::vector<std::unique_ptr<Move>> get_moves(
-        Position position, const Board &board
-    ) const override;
+    std::vector<std::unique_ptr<Move>> get_moves(Position from, const Board &board) const override;
 
   private:
     std::vector<Direction> directions_;

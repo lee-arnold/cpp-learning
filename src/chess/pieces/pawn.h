@@ -14,18 +14,12 @@ namespace chess {
 class Pawn : public Piece {
   public:
     explicit Pawn(Colour colour);
-    std::vector<std::unique_ptr<Move>> get_moves(
-        Position position, const Board &board
-    ) const override;
+    std::vector<std::unique_ptr<Move>> get_moves(Position from, const Board &board) const override;
 
   private:
     Direction forward_;
-    std::vector<std::unique_ptr<Move>> get_forward_moves(
-        Position position, const Board &board
-    ) const;
-    std::vector<std::unique_ptr<Move>> get_diagonal_moves(
-        Position position, const Board &board
-    ) const;
+    std::vector<std::unique_ptr<Move>> get_forward_moves(Position from, const Board &board) const;
+    std::vector<std::unique_ptr<Move>> get_diagonal_moves(Position from, const Board &board) const;
 };
 
 }

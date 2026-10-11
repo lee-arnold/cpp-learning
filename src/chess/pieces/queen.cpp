@@ -25,8 +25,8 @@ Queen::Queen(Colour colour)
       }} {
 }
 
-std::vector<std::unique_ptr<Move>> Queen::get_moves(Position position, const Board &board) const {
-    return get_moves_in_directions(position, board, directions_);
+std::vector<std::unique_ptr<Move>> Queen::get_moves(Position from, const Board &board) const {
+    return get_moves_in_directions(from, board, directions_);
 }
 
 }

@@ -19,24 +19,24 @@ Pawn::Pawn(Colour colour)
       forward_{colour == Colour::White ? Direction::North() : Direction::South()} {
 }
 
-std::vector<std::unique_ptr<Move>> Pawn::get_moves(Position position, const Board &board) const {
+std::vector<std::unique_ptr<Move>> Pawn::get_moves(Position from, const Board &board) const {
     std::vector<std::unique_ptr<Move>> moves;
 
-    moves.append_range(get_forward_moves(position, board) | std::views::as_rvalue);
-    moves.append_range(get_diagonal_moves(position, board) | std::views::as_rvalue);
+    moves.append_range(get_forward_moves(from, board) | std::views::as_rvalue);
+    moves.append_range(get_diagonal_moves(from, board) | std::views::as_rvalue);
 
     return moves;
 }
 
 std::vector<std::unique_ptr<Move>> Pawn::get_forward_moves(
-    Position position, const Board &board
+    Position from, const Board &board
 ) const {
     std::vector<std::unique_ptr<Move>> moves;
 
-    auto one_forward = position + forward_;
+    auto one_forward = from + forward_;
 
     if (board.is_inside(one_forward) && board.is_empty(one_forward)) {
-        moves.push_back(std::make_unique<NormalMove>(position, one_forward));
+        moves.push_back(std::make_unique<NormalMove>(from, one_forward));
     } else {
         return moves;
     }
@@ -44,14 +44,14 @@ std::vector<std::unique_ptr<Move>> Pawn::get_forward_moves(
     auto two_forward = one_forward + forward_;
 
     if (!this->has_moved() && board.is_inside(two_forward) && board.is_empty(two_forward)) {
-        moves.push_back(std::make_unique<NormalMove>(position, two_forward));
+        moves.push_back(std::make_unique<NormalMove>(from, two_forward));
     }
 
     return moves;
 }
 
 std::vector<std::unique_ptr<Move>> Pawn::get_diagonal_moves(
-    Position position [[maybe_unused]], const Board &board [[maybe_unused]]
+    Position from [[maybe_unused]], const Board &board [[maybe_unused]]
 ) const {
     return std::vector<std::unique_ptr<Move>>{};
 }

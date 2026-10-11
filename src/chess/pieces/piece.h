@@ -17,7 +17,7 @@ class Piece {
     bool has_moved() const;
     void set_has_moved();
     virtual std::vector<std::unique_ptr<Move>> get_moves(
-        Position position, const Board &board
+        Position from, const Board &board
     ) const = 0;
     virtual ~Piece() = default;
 
@@ -25,10 +25,10 @@ class Piece {
     // protected prevents creation of random pieces outside of classes that inherit
     Piece(Colour colour, PieceType type);
     std::vector<std::unique_ptr<Move>> get_moves_in_direction(
-        const Position position, const Board &board, const Direction &direction
+        const Position from, const Board &board, const Direction &direction
     ) const;
     std::vector<std::unique_ptr<Move>> get_moves_in_directions(
-        const Position position, const Board &board, const std::vector<Direction> &direction
+        const Position from, const Board &board, const std::vector<Direction> &direction
     ) const;
 
   private:
@@ -37,10 +37,10 @@ class Piece {
     PieceType type_;
     bool has_moved_{false};
     std::vector<std::unique_ptr<Move>> get_moves_in_direction(
-        const Position position, const Board &board, const Direction direction
+        const Position from, const Board &board, const Direction direction
     );
     std::vector<std::unique_ptr<Move>> get_moves_in_directions(
-        const Position position, const Board &board, const std::vector<Direction> direction
+        const Position from, const Board &board, const std::vector<Direction> direction
     );
 };
 
