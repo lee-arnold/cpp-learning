@@ -1,6 +1,7 @@
 #include "chess/pieces/rook.h"
 #include "chess/board.h"
 #include "chess/colour.h"
+#include "chess/direction.h"
 #include "chess/moves/move.h"
 #include "chess/pieces/piece.h"
 #include "chess/pieces/piece_type.h"
@@ -10,13 +11,18 @@
 
 namespace chess {
 
-Rook::Rook(Colour colour) : Piece{colour, PieceType::Rook} {
+Rook::Rook(Colour colour)
+    : Piece{colour, PieceType::Rook},
+      directions_{std::vector<Direction>{
+          Direction::North(),
+          Direction::East(),
+          Direction::South(),
+          Direction::West(),
+      }} {
 }
 
-std::vector<std::unique_ptr<Move>> Rook::get_moves(
-    Position position [[maybe_unused]], const Board &board [[maybe_unused]]
-) const {
-    return std::vector<std::unique_ptr<Move>>{};
+std::vector<std::unique_ptr<Move>> Rook::get_moves(Position position, const Board &board) const {
+    return get_moves_in_directions(position, board, directions_);
 }
 
 }
