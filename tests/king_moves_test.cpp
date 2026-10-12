@@ -1,4 +1,5 @@
 #include "chess/board.h"
+#include "chess/colour.h"
 #include "chess/game_state.h"
 #include "helpers/moves.h"
 #include "helpers/squares.h"
@@ -13,7 +14,7 @@ TEST_CASE(
     "A king with empty surrounding squares can move exactly one square in all eight directions"
 ) {
     chess::Board board;
-    const chess::GameState game{board};
+    chess::GameState game{chess::Colour::White, board};
 
     relocate_piece(board, e1, d4);
 
@@ -32,7 +33,7 @@ TEST_CASE(
 
 TEST_CASE("A king can capture adjacent enemy pieces but cannot move onto friendly pieces") {
     chess::Board board;
-    const chess::GameState game{board};
+    chess::GameState game{chess::Colour::White, board};
 
     relocate_piece(board, d7, e2);
 
@@ -44,7 +45,7 @@ TEST_CASE("A king can capture adjacent enemy pieces but cannot move onto friendl
 
 TEST_CASE("A king in a corner with empty surrounding squares has exactly three destinations") {
     chess::Board board;
-    const chess::GameState game{board};
+    chess::GameState game{chess::Colour::White, board};
 
     relocate_piece(board, e1, a1);
     clear_piece(board, a2);

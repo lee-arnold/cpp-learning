@@ -1,4 +1,5 @@
 #include "chess/board.h"
+#include "chess/colour.h"
 #include "chess/game_state.h"
 #include "chess/position.h"
 #include "gui/window.h"
@@ -12,7 +13,7 @@
 int main() {
     try {
         chess::Board board{};
-        chess::GameState game_state{board};
+        chess::GameState game_state{chess::Colour::White, board};
         gui::Window window{board};
         std::optional<chess::Position> last_selected_square{};
 
@@ -44,7 +45,7 @@ int main() {
                 auto move = std::ranges::find_if(available_moves, matches_destination);
 
                 if (move != available_moves.end()) {
-                    (*move)->execute(board);
+                    game_state.execute_move(**move);
                 }
             }
 

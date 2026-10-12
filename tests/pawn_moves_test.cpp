@@ -1,4 +1,5 @@
 #include "chess/board.h"
+#include "chess/colour.h"
 #include "chess/game_state.h"
 #include "chess/position.h"
 #include "helpers/moves.h"
@@ -11,8 +12,8 @@
 using namespace test_squares;
 
 TEST_CASE("An unmoved white pawn with a clear path can advance one or two squares") {
-    const chess::Board board;
-    const chess::GameState game{board};
+    chess::Board board;
+    chess::GameState game{chess::Colour::White, board};
 
     const auto destinations = get_destinations_for_piece(game, a2);
 
@@ -22,8 +23,8 @@ TEST_CASE("An unmoved white pawn with a clear path can advance one or two square
 }
 
 TEST_CASE("An unmoved black pawn with a clear path can advance one or two squares") {
-    const chess::Board board;
-    const chess::GameState game{board};
+    chess::Board board;
+    chess::GameState game{chess::Colour::Black, board};
 
     const auto destinations = get_destinations_for_piece(game, h7);
 
@@ -34,7 +35,7 @@ TEST_CASE("An unmoved black pawn with a clear path can advance one or two square
 
 TEST_CASE("A previously moved pawn with a clear path can advance only one square") {
     chess::Board board;
-    const chess::GameState game{board};
+    chess::GameState game{chess::Colour::White, board};
 
     relocate_piece(board, a2, a3, true);
 
@@ -46,7 +47,7 @@ TEST_CASE("A previously moved pawn with a clear path can advance only one square
 
 TEST_CASE("A friendly piece immediately ahead prevents all pawn forward moves") {
     chess::Board board;
-    const chess::GameState game{board};
+    chess::GameState game{chess::Colour::White, board};
 
     relocate_piece(board, b2, a3);
 
@@ -57,7 +58,7 @@ TEST_CASE("A friendly piece immediately ahead prevents all pawn forward moves") 
 
 TEST_CASE("An enemy piece immediately ahead prevents all pawn forward moves") {
     chess::Board board;
-    const chess::GameState game{board};
+    chess::GameState game{chess::Colour::White, board};
 
     relocate_piece(board, b7, a3);
 
@@ -68,7 +69,7 @@ TEST_CASE("An enemy piece immediately ahead prevents all pawn forward moves") {
 
 TEST_CASE("A friendly piece two squares ahead allows only the one-square pawn advance") {
     chess::Board board;
-    const chess::GameState game{board};
+    chess::GameState game{chess::Colour::White, board};
 
     relocate_piece(board, b2, a4);
     const auto destinations = get_destinations_for_piece(game, a2);
@@ -79,7 +80,7 @@ TEST_CASE("A friendly piece two squares ahead allows only the one-square pawn ad
 
 TEST_CASE("An enemy piece two squares ahead allows only the one-square pawn advance") {
     chess::Board board;
-    const chess::GameState game{board};
+    chess::GameState game{chess::Colour::White, board};
 
     relocate_piece(board, b7, a4);
     const auto destinations = get_destinations_for_piece(game, a2);
@@ -92,7 +93,7 @@ TEST_CASE(
     "An unmoved white pawn one rank from the edge has only an in-bounds one-square destination"
 ) {
     chess::Board board;
-    const chess::GameState game{board};
+    chess::GameState game{chess::Colour::White, board};
 
     clear_piece(board, a8);
     relocate_piece(board, a2, a7);
@@ -106,7 +107,7 @@ TEST_CASE(
     "An unmoved black pawn one rank from the edge has only an in-bounds one-square destination"
 ) {
     chess::Board board;
-    const chess::GameState game{board};
+    chess::GameState game{chess::Colour::Black, board};
 
     clear_piece(board, a1);
     relocate_piece(board, a7, a2);
@@ -118,7 +119,7 @@ TEST_CASE(
 
 TEST_CASE("Moves generated for a pawn start at the pawn's current square") {
     chess::Board board;
-    const chess::GameState game{board};
+    chess::GameState game{chess::Colour::White, board};
 
     const auto source_positions = get_source_positions_for_piece(game, a2);
 
@@ -129,8 +130,8 @@ TEST_CASE("Moves generated for a pawn start at the pawn's current square") {
 }
 
 TEST_CASE("Querying pawn moves leaves the pawn and its forward squares unchanged.") {
-    const chess::Board board;
-    const chess::GameState game{board};
+    chess::Board board;
+    chess::GameState game{chess::Colour::White, board};
 
     auto a2_ptr = board[a2].get();
     auto a3_ptr = board[a3].get();
@@ -147,8 +148,8 @@ TEST_CASE("Querying pawn moves leaves the pawn and its forward squares unchanged
 TEST_CASE(
     "Repeated queries on an unchanged board return the same pawn destinations without duplicates"
 ) {
-    const chess::Board board;
-    const chess::GameState game{board};
+    chess::Board board;
+    chess::GameState game{chess::Colour::White, board};
 
     auto destinations = get_destinations_for_piece(game, a2);
 
@@ -171,7 +172,7 @@ TEST_CASE(
 
 TEST_CASE("Querying an empty square returns no available moves") {
     chess::Board board;
-    const chess::GameState game{board};
+    chess::GameState game{chess::Colour::White, board};
 
     const auto moves = game.available_moves_for_piece(a4);
 
@@ -180,7 +181,7 @@ TEST_CASE("Querying an empty square returns no available moves") {
 
 TEST_CASE("Querying a position beyond any board edge returns no available moves") {
     chess::Board board;
-    const chess::GameState game{board};
+    chess::GameState game{chess::Colour::White, board};
 
     auto moves = game.available_moves_for_piece(chess::Position{-1, 1});
 

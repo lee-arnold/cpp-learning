@@ -1,4 +1,5 @@
 #include "chess/board.h"
+#include "chess/colour.h"
 #include "chess/game_state.h"
 #include "helpers/moves.h"
 #include "helpers/squares.h"
@@ -11,7 +12,7 @@ using namespace test_squares;
 
 TEST_CASE("A knight in the centre with empty destination squares has all eight L-shaped moves") {
     chess::Board board;
-    const chess::GameState game{board};
+    chess::GameState game{chess::Colour::White, board};
 
     relocate_piece(board, b1, d4);
     clear_piece(board, c2);
@@ -35,7 +36,7 @@ TEST_CASE("A knight in the centre with empty destination squares has all eight L
 
 TEST_CASE("A knight can capture an enemy piece on an L-shaped destination square") {
     chess::Board board;
-    const chess::GameState game{board};
+    chess::GameState game{chess::Colour::White, board};
 
     relocate_piece(board, b1, d5);
 
@@ -57,7 +58,7 @@ TEST_CASE("A knight can capture an enemy piece on an L-shaped destination square
 
 TEST_CASE("A knight in the centre generates moves and cannot land on friendly pieces") {
     chess::Board board;
-    const chess::GameState game{board};
+    chess::GameState game{chess::Colour::White, board};
 
     relocate_piece(board, b1, d4);
 
@@ -76,7 +77,7 @@ TEST_CASE("A knight in the centre generates moves and cannot land on friendly pi
 
 TEST_CASE("A knight in a corner generates only destinations inside the board") {
     chess::Board board;
-    const chess::GameState game{board};
+    chess::GameState game{chess::Colour::White, board};
 
     clear_piece(board, c2);
     relocate_piece(board, b1, a1);

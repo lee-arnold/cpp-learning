@@ -1,4 +1,5 @@
 #include "chess/board.h"
+#include "chess/colour.h"
 #include "chess/game_state.h"
 #include "helpers/moves.h"
 #include "helpers/squares.h"
@@ -11,7 +12,7 @@ using namespace test_squares;
 
 TEST_CASE("A bishop can move on all four diagonals and respects blockers") {
     chess::Board board;
-    const chess::GameState game{board};
+    chess::GameState game{chess::Colour::White, board};
 
     relocate_piece(board, c1, c5);
     clear_piece(board, g1);
@@ -31,7 +32,7 @@ TEST_CASE("A bishop can move on all four diagonals and respects blockers") {
 
 TEST_CASE("A bishop in a corner generates only destinations inside the board") {
     chess::Board board;
-    const chess::GameState game{board};
+    chess::GameState game{chess::Colour::White, board};
 
     clear_piece(board, a1);
     clear_piece(board, b2);

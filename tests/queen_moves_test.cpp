@@ -1,4 +1,5 @@
 #include "chess/board.h"
+#include "chess/colour.h"
 #include "chess/game_state.h"
 #include "helpers/moves.h"
 #include "helpers/squares.h"
@@ -11,7 +12,7 @@ using namespace test_squares;
 
 TEST_CASE("A queen in the centre generates moves in all eight directions and respects blockers") {
     chess::Board board;
-    const chess::GameState game{board};
+    chess::GameState game{chess::Colour::White, board};
 
     relocate_piece(board, d1, d4);
     clear_piece(board, g1);

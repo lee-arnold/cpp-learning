@@ -1,4 +1,5 @@
 #include "chess/board.h"
+#include "chess/colour.h"
 #include "chess/game_state.h"
 #include "helpers/moves.h"
 #include "helpers/squares.h"
@@ -13,7 +14,7 @@ TEST_CASE(
     "A rook in the centre generates only horizontal and vertical moves and respects blockers"
 ) {
     chess::Board board;
-    const chess::GameState game{board};
+    chess::GameState game{chess::Colour::White, board};
 
     relocate_piece(board, a1, d4);
     clear_piece(board, d8);
