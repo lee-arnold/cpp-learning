@@ -8,9 +8,19 @@
 #include "chess/pieces/piece_type.h"
 #include "chess/position.h"
 
+#include <array>
 #include <memory>
 #include <ranges>
 #include <vector>
+
+namespace {
+
+constexpr auto file_directions = std::array<chess::Direction, 2>{
+    chess::Direction::East(),
+    chess::Direction::West(),
+};
+
+}
 
 namespace chess {
 
@@ -50,10 +60,34 @@ std::vector<std::unique_ptr<Move>> Pawn::get_forward_moves(
     return moves;
 }
 
+bool Pawn::can_capture_at(Position position, const Board &board) const {
+    if (!Board::is_inside(position) || board.is_empty(position)) {
+        return false;
+    }
+
+    return board[position]->colour() != colour();
+}
+
 std::vector<std::unique_ptr<Move>> Pawn::get_diagonal_moves(
-    Position from [[maybe_unused]], const Board &board [[maybe_unused]]
+    Position from, const Board &board
 ) const {
-    return std::vector<std::unique_ptr<Move>>{};
+    std::vector<std::unique_ptr<Move>> moves;
+
+    for (auto file : file_directions) {
+        Position to = from + forward_ + file;
+        if (can_capture_at(to, board)) {
+            if (to.rank() == 0 || to.rank() == 7) {
+                // @TODO implement promotion capture
+                moves.push_back(std::make_unique<NormalMove>(from, to));
+            } else {
+                moves.push_back(std::make_unique<NormalMove>(from, to));
+            }
+        }
+
+        // @TODO implement en passant
+    }
+
+    return moves;
 }
 
 }
