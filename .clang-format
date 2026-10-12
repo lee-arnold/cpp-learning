@@ -1,5 +1,7 @@
 BasedOnStyle: LLVM # use LLVM defaults for options not specified here
 IndentWidth: 4 # use four spaces per indentation level
+IndentCaseLabels: true # indent case labels inside switch, with statements one level further
+BreakBinaryOperations: OnePerLine # put each operand on its own line when a binary expression wraps
 ColumnLimit: 100 # aim to keep lines within 100 columns
 AllowShortFunctionsOnASingleLine: None # always expand function bodies onto multiple lines
 FixNamespaceComments: false # do not add or fix namespace closing comments
