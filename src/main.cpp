@@ -1,56 +1,19 @@
-#include "chess/board.h"
-#include "chess/colour.h"
-#include "chess/game_state.h"
-#include "chess/position.h"
+#include "gui/game_controller.h"
 #include "gui/window.h"
-#include <algorithm>
 #include <exception>
 #include <iostream>
-#include <optional>
-#include <ranges>
-#include <vector>
 
 int main() {
     try {
-        chess::Board board{};
-        chess::GameState game_state{chess::Colour::White, board};
-        gui::Window window{board};
-        std::optional<chess::Position> last_selected_square{};
+        gui::GameController game{};
+        auto &window = game.window();
 
         while (window.is_open()) {
-            const auto requested_move = window.process_events();
+            game.process_events();
+
             if (!window.is_open()) break;
-
-            const auto selected_square = window.selected_square();
-
-            if (selected_square && selected_square != last_selected_square) {
-                const auto highlight_moves = game_state.available_moves_for_piece(*selected_square);
-                const auto positions =
-                    highlight_moves |
-                    std::views::transform([](const auto &move) { return move->to(); }) |
-                    std::ranges::to<std::vector>();
-
-                window.set_move_highlights(positions);
-            }
-
-            last_selected_square = selected_square;
-
-            if (requested_move) {
-                auto available_moves = game_state.available_moves_for_piece(requested_move->from);
-
-                const auto matches_destination = [&requested_move](const auto &move) {
-                    return move->to() == requested_move->to;
-                };
-
-                auto move = std::ranges::find_if(available_moves, matches_destination);
-
-                if (move != available_moves.end()) {
-                    game_state.execute_move(**move);
-                }
-            }
-
             window.clear();
-            window.draw();
+            game.draw();
         }
 
         return 0;
