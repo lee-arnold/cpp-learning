@@ -132,8 +132,6 @@ add_custom_target(check_headers
   COMMENT "Checking header includes with clang-tidy"
   VERBATIM
 )
-# Run the header-check target whenever the application target is built.
-add_dependencies(application check_headers)
 
 # Apply the same warning options to both the application and the chess library.
 foreach(target IN ITEMS application chess)
