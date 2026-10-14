@@ -20,6 +20,7 @@ class GameController {
     void process_events();
     void handle_event(const sf::Event &event);
     void handle_move(const chess::Move &move);
+    void handle_promotion(const chess::Move &move);
     void handle_board_click(const chess::Position &position);
     chess::Position get_board_position_from_click(int mouse_x, int mouse_y);
 

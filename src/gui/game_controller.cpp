@@ -3,6 +3,9 @@
 #include "chess/colour.h"
 #include "chess/game_state.h"
 #include "chess/moves/move.h"
+#include "chess/moves/move_type.h"
+#include "chess/moves/pawn_promotion.h"
+#include "chess/pieces/piece_type.h"
 #include "chess/position.h"
 #include "gui/window.h"
 #include "utils.h"
@@ -62,13 +65,38 @@ void GameController::handle_board_click(const chess::Position &position) {
 
         auto move = std::ranges::find_if(moves, matches_destination);
 
-        // @TODO check and handle pawn promotion
         if (move != moves.end()) {
-            handle_move(**move);
+            if ((*move)->type() == chess::MoveType::PawnPromotion) {
+                handle_promotion(**move);
+            } else {
+                handle_move(**move);
+            }
         }
 
         selected_square_ = std::nullopt;
         window_.clear_move_highlights();
+    }
+}
+
+void GameController::handle_promotion(const chess::Move &move) {
+    // @TODO promoting to queen by default for now
+    // This function will display the promotion panel and translate clicks on it to promotions
+    auto user_clicked = chess::PieceType::Queen;
+
+    auto moves = game_state_.available_moves_for_piece(move.from());
+
+    const auto matches_promotion = [user_clicked, &move](const auto &possible_move) {
+        const auto *promotion_move =
+            dynamic_cast<const chess::PawnPromotionMove *>(possible_move.get());
+        if (!promotion_move) return false;
+
+        return promotion_move->to() == move.to() && promotion_move->piece_type() == user_clicked;
+    };
+
+    auto promotion_move = std::ranges::find_if(moves, matches_promotion);
+
+    if (promotion_move != moves.end()) {
+        handle_move(**promotion_move);
     }
 }
 

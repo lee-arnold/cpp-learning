@@ -1,16 +1,39 @@
 #include "chess/board.h"
 #include "chess/colour.h"
 #include "chess/game_state.h"
+#include "chess/moves/move.h"
+#include "chess/moves/pawn_promotion.h"
 #include "chess/pieces/piece_type.h"
 #include "chess/position.h"
 #include "helpers/moves.h"
 #include "helpers/squares.h"
 
+#include <catch2/catch_message.hpp>
 #include <catch2/catch_test_macros.hpp>
 
 #include <algorithm>
+#include <array>
+#include <memory>
+#include <set>
+#include <vector>
 
 using namespace test_squares;
+
+std::set<chess::PieceType> get_piece_types_for_promotion(
+    const std::vector<std::unique_ptr<chess::Move>> &moves, const chess::Position &position
+) {
+    std::set<chess::PieceType> piece_types{};
+
+    for (const auto &move : moves) {
+        if (move->to() != position) continue;
+        const auto *promotion = dynamic_cast<const chess::PawnPromotionMove *>(move.get());
+        if (!promotion) continue;
+
+        piece_types.insert(promotion->piece_type());
+    }
+
+    return piece_types;
+}
 
 TEST_CASE("An unmoved white pawn with a clear path can advance one or two squares") {
     chess::Board board;
@@ -92,34 +115,44 @@ TEST_CASE("An enemy piece two squares ahead allows only the one-square pawn adva
     REQUIRE(std::ranges::find(destinations, a3) != destinations.end());
 }
 
-TEST_CASE(
-    "An unmoved white pawn one rank from the edge has only an in-bounds one-square destination"
-) {
+TEST_CASE("An unmoved white pawn one rank from the edge offers four promotion choices") {
     chess::Board board;
     chess::GameState game{chess::Colour::White, board};
 
     clear_piece(board, a8);
     clear_piece(board, b8);
     relocate_piece(board, a2, a7);
-    const auto destinations = get_destinations_for_piece(game, a7);
 
-    REQUIRE(destinations.size() == 1);
-    REQUIRE(std::ranges::find(destinations, a8) != destinations.end());
+    auto moves = game.available_moves_for_piece(a7);
+
+    REQUIRE(moves.size() == 4);
+
+    auto piece_types = get_piece_types_for_promotion(moves, a8);
+
+    REQUIRE(piece_types.contains(chess::PieceType::Queen));
+    REQUIRE(piece_types.contains(chess::PieceType::Rook));
+    REQUIRE(piece_types.contains(chess::PieceType::Bishop));
+    REQUIRE(piece_types.contains(chess::PieceType::Knight));
 }
 
-TEST_CASE(
-    "An unmoved black pawn one rank from the edge has only an in-bounds one-square destination"
-) {
+TEST_CASE("An unmoved black pawn one rank from the edge offers four promotion choices") {
     chess::Board board;
     chess::GameState game{chess::Colour::Black, board};
 
     clear_piece(board, a1);
     clear_piece(board, b1);
     relocate_piece(board, a7, a2);
-    const auto destinations = get_destinations_for_piece(game, a2);
 
-    REQUIRE(destinations.size() == 1);
-    REQUIRE(std::ranges::find(destinations, a1) != destinations.end());
+    auto moves = game.available_moves_for_piece(a2);
+
+    REQUIRE(moves.size() == 4);
+
+    auto piece_types = get_piece_types_for_promotion(moves, a1);
+
+    REQUIRE(piece_types.contains(chess::PieceType::Queen));
+    REQUIRE(piece_types.contains(chess::PieceType::Rook));
+    REQUIRE(piece_types.contains(chess::PieceType::Bishop));
+    REQUIRE(piece_types.contains(chess::PieceType::Knight));
 }
 
 TEST_CASE("Moves generated for a pawn start at the pawn's current square") {
@@ -247,4 +280,68 @@ TEST_CASE("A white pawn can capture an enemy to its left but not a friendly piec
     REQUIRE(std::ranges::find(destinations, b4) != destinations.end());
     REQUIRE(std::ranges::find(destinations, a3) != destinations.end());
     REQUIRE(std::ranges::find(destinations, c3) == destinations.end());
+}
+
+TEST_CASE("A white pawn can promote by capturing on either diagonal") {
+    chess::Board board;
+    chess::GameState game{chess::Colour::White, board};
+
+    relocate_piece(board, a2, b7);
+
+    const auto destinations = get_destinations_for_piece(game, b7);
+
+    REQUIRE(std::ranges::count(destinations, a8) == 4);
+    REQUIRE(std::ranges::count(destinations, c8) == 4);
+
+    auto moves = game.available_moves_for_piece(b7);
+
+    REQUIRE(moves.size() == 8);
+
+    auto piece_types = get_piece_types_for_promotion(moves, a8);
+
+    REQUIRE(piece_types.contains(chess::PieceType::Queen));
+    REQUIRE(piece_types.contains(chess::PieceType::Rook));
+    REQUIRE(piece_types.contains(chess::PieceType::Bishop));
+    REQUIRE(piece_types.contains(chess::PieceType::Knight));
+
+    piece_types = get_piece_types_for_promotion(moves, c8);
+
+    REQUIRE(piece_types.contains(chess::PieceType::Queen));
+    REQUIRE(piece_types.contains(chess::PieceType::Rook));
+    REQUIRE(piece_types.contains(chess::PieceType::Bishop));
+    REQUIRE(piece_types.contains(chess::PieceType::Knight));
+}
+
+TEST_CASE("Executing a promotion replaces the pawn with the chosen piece") {
+    constexpr auto promotion_types = std::array{
+        chess::PieceType::Queen,
+        chess::PieceType::Rook,
+        chess::PieceType::Bishop,
+        chess::PieceType::Knight,
+    };
+
+    for (const auto piece_type : promotion_types) {
+        CAPTURE(piece_type);
+
+        chess::Board board;
+        chess::GameState game{chess::Colour::White, board};
+
+        relocate_piece(board, a2, b7);
+
+        const auto moves = game.available_moves_for_piece(b7);
+        const auto chosen_move = std::ranges::find_if(moves, [piece_type](const auto &move) {
+            const auto *promotion = dynamic_cast<const chess::PawnPromotionMove *>(move.get());
+            return promotion && promotion->to() == c8 && promotion->piece_type() == piece_type;
+        });
+
+        REQUIRE(chosen_move != moves.end());
+
+        game.execute_move(**chosen_move);
+
+        REQUIRE(!board[b7]);
+        REQUIRE(board[c8]);
+        REQUIRE(board[c8]->type() == piece_type);
+        REQUIRE(board[c8]->colour() == chess::Colour::White);
+        REQUIRE(board[c8]->has_moved());
+    }
 }

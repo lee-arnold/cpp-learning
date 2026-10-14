@@ -4,6 +4,7 @@
 #include "chess/direction.h"
 #include "chess/moves/move.h"
 #include "chess/moves/normal.h"
+#include "chess/moves/pawn_promotion.h"
 #include "chess/pieces/piece.h"
 #include "chess/pieces/piece_type.h"
 #include "chess/position.h"
@@ -46,7 +47,12 @@ std::vector<std::unique_ptr<Move>> Pawn::get_forward_moves(
     auto one_forward = from + forward_;
 
     if (board.is_inside(one_forward) && board.is_empty(one_forward)) {
-        moves.push_back(std::make_unique<NormalMove>(from, one_forward));
+        if (one_forward.rank() == 0 || one_forward.rank() == 7) {
+            moves.append_range(get_promotion_moves(from, one_forward) | std::views::as_rvalue);
+            return moves;
+        } else {
+            moves.push_back(std::make_unique<NormalMove>(from, one_forward));
+        }
     } else {
         return moves;
     }
@@ -77,8 +83,7 @@ std::vector<std::unique_ptr<Move>> Pawn::get_diagonal_moves(
         Position to = from + forward_ + file;
         if (can_capture_at(to, board)) {
             if (to.rank() == 0 || to.rank() == 7) {
-                // @TODO implement promotion capture
-                moves.push_back(std::make_unique<NormalMove>(from, to));
+                moves.append_range(get_promotion_moves(from, to) | std::views::as_rvalue);
             } else {
                 moves.push_back(std::make_unique<NormalMove>(from, to));
             }
@@ -86,6 +91,17 @@ std::vector<std::unique_ptr<Move>> Pawn::get_diagonal_moves(
 
         // @TODO implement en passant
     }
+
+    return moves;
+}
+
+std::vector<std::unique_ptr<Move>> Pawn::get_promotion_moves(Position from, Position to) const {
+    std::vector<std::unique_ptr<Move>> moves;
+
+    moves.push_back(std::make_unique<PawnPromotionMove>(from, to, PieceType::Queen));
+    moves.push_back(std::make_unique<PawnPromotionMove>(from, to, PieceType::Rook));
+    moves.push_back(std::make_unique<PawnPromotionMove>(from, to, PieceType::Bishop));
+    moves.push_back(std::make_unique<PawnPromotionMove>(from, to, PieceType::Knight));
 
     return moves;
 }

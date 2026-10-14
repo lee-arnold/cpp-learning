@@ -20,6 +20,7 @@ class Pawn : public Piece {
     Direction forward_;
     std::vector<std::unique_ptr<Move>> get_forward_moves(Position from, const Board &board) const;
     std::vector<std::unique_ptr<Move>> get_diagonal_moves(Position from, const Board &board) const;
+    std::vector<std::unique_ptr<Move>> get_promotion_moves(Position from, Position to) const;
     bool can_capture_at(Position position, const Board &board) const;
 };
 
