@@ -26,6 +26,8 @@ void Board::initialise() {
         board_[6][file] = std::make_unique<Pawn>(Colour::Black);
     }
 
+    board_[6][0] = std::make_unique<Pawn>(Colour::White);
+
     // Rooks
     board_[0][0] = std::make_unique<Rook>(Colour::White);
     board_[0][7] = std::make_unique<Rook>(Colour::White);

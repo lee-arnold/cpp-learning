@@ -1,0 +1,34 @@
+#include "gui/modals/pawn_promotion.h"
+#include "chess/board.h"
+#include "chess/pieces/pawn.h"
+#include "chess/position.h"
+#include "gui/modals/modal.h"
+#include "gui/utils.h"
+#include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/System/Vector2.hpp>
+
+namespace gui {
+
+PawnPromotionModal::PawnPromotionModal(
+    const chess::Pawn &pawn, const chess::Position &position, const chess::Board &board
+)
+    : Modal(),
+      pawn_{pawn},
+      position_{position},
+      board_{board} {
+}
+
+void PawnPromotionModal::draw(sf::RenderTarget &target) {
+    auto rect = sf::RectangleShape{};
+    rect.setSize(sf::Vector2f(square_size, square_size));
+    rect.setFillColor(sf::Color::White);
+
+    auto square_pos = square_position(position_, board_);
+
+    rect.setPosition(square_pos);
+    target.draw(rect);
+}
+
+}

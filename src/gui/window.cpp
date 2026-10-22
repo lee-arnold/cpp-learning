@@ -2,11 +2,13 @@
 #include "chess/board.h"
 #include "chess/colour.h"
 #include "chess/moves/move.h"
+#include "chess/pieces/piece_type.h"
 #include "chess/position.h"
 #include "gui/utils.h"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <SFML/Window/WindowEnums.hpp>
@@ -56,7 +58,9 @@ void Window::draw(std::optional<chess::Position> selected_square) {
             }
         }
     }
+}
 
+void Window::display() {
     window_.display();
 }
 
@@ -76,7 +80,7 @@ void Window::draw_piece(chess::Position position) {
 
     auto &piece = board_[position];
 
-    auto sprite = textures_.at(TextureKey{piece->type(), piece->colour()}).get_sprite();
+    auto sprite = texture_for(piece->type(), piece->colour());
     auto sprite_bounds = sprite.getLocalBounds();
     auto sprite_center = sf::Vector2f{
         sprite_bounds.position.x + sprite_bounds.size.x / 2.0f,
@@ -134,6 +138,10 @@ void Window::set_move_highlights(const std::vector<std::unique_ptr<chess::Move>>
 
 void Window::clear_move_highlights() {
     move_highlights_.clear();
+}
+
+sf::Sprite Window::texture_for(chess::PieceType type, chess::Colour colour) {
+    return textures_.at(TextureKey{type, colour}).get_sprite();
 }
 
 }
