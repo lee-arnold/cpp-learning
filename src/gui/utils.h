@@ -37,6 +37,8 @@ constexpr auto dark = sf::Color{115, 149, 82};
 constexpr auto square_size = 100.0f;
 constexpr auto icon_size = square_size * 0.8f;
 const auto selected_square_outline = 2.0f;
+constexpr auto close_icon_stroke_length = square_size * 0.3f;
+constexpr auto close_icon_stroke_thickness = 3.0f;
 
 sf::Vector2f square_position(chess::Position position, const chess::Board &board);
 

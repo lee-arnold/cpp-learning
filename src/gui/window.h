@@ -7,6 +7,7 @@
 #include "chess/position.h"
 #include "gui/texture.h"
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <map>
 #include <memory>
 #include <optional>
@@ -23,10 +24,14 @@ class Window {
     void close();
     void clear();
     void draw(std::optional<chess::Position> selected_square);
+    void display();
 
     bool is_open() const;
+
     void set_move_highlights(const std::vector<std::unique_ptr<chess::Move>> &moves);
     void clear_move_highlights();
+
+    sf::Sprite texture_for(chess::PieceType type, chess::Colour colour);
 
   private:
     sf::RenderWindow window_;
