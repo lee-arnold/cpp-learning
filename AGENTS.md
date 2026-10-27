@@ -42,7 +42,7 @@ Report concrete issues, why they matter, and where they occur. Be thorough when 
 review, but otherwise keep replies focused and concise. If I ask to review the implementation before
 tests, hold test feedback until the implementation is settled.
 
-Use this review format:
+Use this format for the initial code review report only:
 
 - Provide a numbered list only, without introductory or concluding paragraphs.
 - Put relevant supplementary information, such as validation results, limitations, or broader
@@ -51,6 +51,11 @@ Use this review format:
   detailed explanations or solutions for the whole list.
 - After listing the issues, start with issue 1 and provide one short, concrete `HINT:`. This is the
   permitted follow-up to the numbered list; do not add other closing commentary.
+
+For subsequent discussion, explanations, and checks of individual fixes, use normal conversational
+prose. The numbered-list-only rule and prohibition on introductory or concluding paragraphs do not
+apply to these follow-ups. Do not number every sentence. Continue to follow these review practices:
+
 - Work through solutions one issue at a time. Wait for me to prompt for the next issue rather than
   advancing through the entire list.
 - When I make a change, inspect the actual diff and assess whether it resolves the current issue.
