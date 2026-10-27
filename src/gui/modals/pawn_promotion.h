@@ -26,7 +26,7 @@ class PawnPromotionModal : public Modal {
     PawnPromotionModal(const chess::Board &board, Window &window);
     void draw(sf::RenderTarget &target) override;
     void open(chess::Position position, chess::Colour colour);
-    std::optional<chess::PieceType> handle_click(sf::Vector2i mouse_position);
+    std::optional<chess::PieceType> handle_click(sf::Vector2i mouse_position) const;
 
   private:
     const chess::Board &board_;

@@ -50,7 +50,7 @@ void GameController::handle_event(const sf::Event &event) {
             if (piece_type) handle_promotion(*piece_type);
 
             pending_promotion_ = std::nullopt;
-            pawn_promotion_modal_.toggle();
+            pawn_promotion_modal_.hide();
             return;
         }
 

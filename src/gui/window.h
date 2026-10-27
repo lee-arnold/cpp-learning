@@ -31,7 +31,7 @@ class Window {
     void set_move_highlights(const std::vector<std::unique_ptr<chess::Move>> &moves);
     void clear_move_highlights();
 
-    sf::Sprite texture_for(chess::PieceType type, chess::Colour colour);
+    sf::Sprite sprite_for(chess::PieceType type, chess::Colour colour) const;
 
   private:
     sf::RenderWindow window_;

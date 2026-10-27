@@ -15,7 +15,6 @@
 #include <SFML/System/Angle.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <algorithm>
-#include <array>
 #include <cstddef>
 #include <optional>
 
@@ -28,38 +27,39 @@ PawnPromotionModal::PawnPromotionModal(const chess::Board &board, Window &window
 }
 
 void PawnPromotionModal::open(chess::Position position, chess::Colour colour) {
-    toggle();
+    show();
     position_ = position;
     colour_ = colour;
     elements_ = {
         {{
              chess::PieceType::Queen,
              sf::FloatRect{},
-             window_.texture_for(chess::PieceType::Queen, colour),
+             window_.sprite_for(chess::PieceType::Queen, colour),
          },
          {
              chess::PieceType::Knight,
              sf::FloatRect{},
-             window_.texture_for(chess::PieceType::Knight, colour),
+             window_.sprite_for(chess::PieceType::Knight, colour),
          },
          {
              chess::PieceType::Rook,
              sf::FloatRect{},
-             window_.texture_for(chess::PieceType::Rook, colour),
+             window_.sprite_for(chess::PieceType::Rook, colour),
          },
          {
              chess::PieceType::Bishop,
              sf::FloatRect{},
-             window_.texture_for(chess::PieceType::Bishop, colour),
+             window_.sprite_for(chess::PieceType::Bishop, colour),
          }}
     };
 
     int i = 0;
-    for (auto &element : *elements_) {
-        auto direction =
-            colour == chess::Colour::Black ? chess::Direction::North() : chess::Direction::South();
+    auto direction =
+        colour == chess::Colour::Black ? chess::Direction::North() : chess::Direction::South();
 
-        auto square_pos = square_position(position + direction * static_cast<int>(i), board_);
+    for (auto &element : *elements_) {
+
+        auto square_pos = square_position(position + direction * i, board_);
 
         element.rect = sf::FloatRect{square_pos, sf::Vector2f{square_size, square_size}};
 
@@ -69,10 +69,11 @@ void PawnPromotionModal::open(chess::Position position, chess::Colour colour) {
 
 void PawnPromotionModal::draw(sf::RenderTarget &target) {
     if (!position_ || !elements_) return;
-    auto position = *position_;
-    auto elements = *elements_;
+    const auto position = *position_;
+    const auto direction =
+        colour_ == chess::Colour::Black ? chess::Direction::North() : chess::Direction::South();
 
-    for (auto &element : *elements_) {
+    for (const auto &element : *elements_) {
         auto square_pos = element.rect.position;
 
         auto rect = sf::RectangleShape{};
@@ -102,9 +103,6 @@ void PawnPromotionModal::draw(sf::RenderTarget &target) {
         target.draw(sprite);
     }
 
-    const auto direction =
-        colour_ == chess::Colour::Black ? chess::Direction::North() : chess::Direction::South();
-
     const auto close_position = square_position(position + direction * 4, board_);
     auto rect = sf::RectangleShape{};
     rect.setSize(sf::Vector2f(square_size, square_size));
@@ -123,7 +121,9 @@ void PawnPromotionModal::draw(sf::RenderTarget &target) {
     target.draw(stroke);
 }
 
-std::optional<chess::PieceType> PawnPromotionModal::handle_click(sf::Vector2i mouse_position) {
+std::optional<chess::PieceType> PawnPromotionModal::handle_click(
+    sf::Vector2i mouse_position
+) const {
     auto position = static_cast<sf::Vector2f>(mouse_position);
 
     for (const auto &element : *elements_) {

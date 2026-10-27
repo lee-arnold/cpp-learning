@@ -8,8 +8,10 @@ class Modal {
   public:
     virtual void draw(sf::RenderTarget &target) = 0;
     virtual ~Modal() = default;
-    bool is_visible();
+    bool is_visible() const;
     void toggle();
+    void show();
+    void hide();
 
   protected:
     Modal();

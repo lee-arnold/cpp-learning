@@ -80,7 +80,7 @@ void Window::draw_piece(chess::Position position) {
 
     auto &piece = board_[position];
 
-    auto sprite = texture_for(piece->type(), piece->colour());
+    auto sprite = sprite_for(piece->type(), piece->colour());
     auto sprite_bounds = sprite.getLocalBounds();
     auto sprite_center = sf::Vector2f{
         sprite_bounds.position.x + sprite_bounds.size.x / 2.0f,
@@ -140,7 +140,7 @@ void Window::clear_move_highlights() {
     move_highlights_.clear();
 }
 
-sf::Sprite Window::texture_for(chess::PieceType type, chess::Colour colour) {
+sf::Sprite Window::sprite_for(chess::PieceType type, chess::Colour colour) const {
     return textures_.at(TextureKey{type, colour}).get_sprite();
 }
 
