@@ -324,28 +324,49 @@ TEST_CASE("Executing a promotion replaces the pawn with the chosen piece") {
         chess::PieceType::Knight,
     };
 
-    for (const auto piece_type : promotion_types) {
-        CAPTURE(piece_type);
+    constexpr auto colours = std::array{chess::Colour::White, chess::Colour::Black};
 
-        chess::Board board;
-        chess::GameState game{chess::Colour::White, board};
+    for (const auto colour : colours) {
+        CAPTURE(colour);
 
-        relocate_piece(board, a2, b7);
+        const auto original_square = colour == chess::Colour::White ? a2 : a7;
+        const auto from = colour == chess::Colour::White ? b7 : b2;
+        const auto destinations =
+            colour == chess::Colour::White ? std::array{c8, b8} : std::array{c1, b1};
 
-        const auto moves = game.available_moves_for_piece(b7);
-        const auto chosen_move = std::ranges::find_if(moves, [piece_type](const auto &move) {
-            const auto *promotion = dynamic_cast<const chess::PawnPromotionMove *>(move.get());
-            return promotion && promotion->to() == c8 && promotion->piece_type() == piece_type;
-        });
+        for (const auto to : destinations) {
+            CAPTURE(to);
 
-        REQUIRE(chosen_move != moves.end());
+            for (const auto piece_type : promotion_types) {
+                CAPTURE(piece_type);
 
-        game.execute_move(**chosen_move);
+                chess::Board board;
+                chess::GameState game{colour, board};
 
-        REQUIRE(!board[b7]);
-        REQUIRE(board[c8]);
-        REQUIRE(board[c8]->type() == piece_type);
-        REQUIRE(board[c8]->colour() == chess::Colour::White);
-        REQUIRE(board[c8]->has_moved());
+                relocate_piece(board, original_square, from);
+                if (to.file() == from.file()) clear_piece(board, to);
+
+                const auto moves = game.available_moves_for_piece(from);
+                const auto chosen_move =
+                    std::ranges::find_if(moves, [piece_type, to](const auto &move) {
+                        const auto *promotion =
+                            dynamic_cast<const chess::PawnPromotionMove *>(move.get());
+                        return promotion &&
+                               promotion->to() ==
+                               to &&
+                               promotion->piece_type() == piece_type;
+                    });
+
+                REQUIRE(chosen_move != moves.end());
+
+                game.execute_move(**chosen_move);
+
+                REQUIRE(!board[from]);
+                REQUIRE(board[to]);
+                REQUIRE(board[to]->type() == piece_type);
+                REQUIRE(board[to]->colour() == colour);
+                REQUIRE(board[to]->has_moved());
+            }
+        }
     }
 }
