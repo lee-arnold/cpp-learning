@@ -12,7 +12,7 @@ namespace chess {
 class GameState {
   public:
     GameState(Colour player, Board &board);
-    std::vector<std::unique_ptr<Move>> available_moves_for_piece(const Position position) const;
+    std::vector<std::unique_ptr<Move>> available_moves_for_piece(Position position) const;
     Colour current_player() const;
     void execute_move(const Move &move);
 

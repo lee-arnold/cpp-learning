@@ -17,36 +17,36 @@ class Direction {
         return file_delta_;
     }
 
-    constexpr static Direction North() {
+    static constexpr Direction north() {
         return Direction{1, 0};
     }
 
-    constexpr static Direction South() {
+    static constexpr Direction south() {
         return Direction{-1, 0};
     }
 
-    constexpr static Direction East() {
+    static constexpr Direction east() {
         return Direction{0, 1};
     }
 
-    constexpr static Direction West() {
+    static constexpr Direction west() {
         return Direction{0, -1};
     }
 
-    constexpr static Direction NorthWest() {
-        return Direction::North() + Direction::West();
+    static constexpr Direction northwest() {
+        return Direction::north() + Direction::west();
     }
 
-    constexpr static Direction NorthEast() {
-        return Direction::North() + Direction::East();
+    static constexpr Direction northeast() {
+        return Direction::north() + Direction::east();
     }
 
-    constexpr static Direction SouthWest() {
-        return Direction::South() + Direction::West();
+    static constexpr Direction southwest() {
+        return Direction::south() + Direction::west();
     }
 
-    constexpr static Direction SouthEast() {
-        return Direction::South() + Direction::East();
+    static constexpr Direction southeast() {
+        return Direction::south() + Direction::east();
     }
 
     constexpr Direction operator+(Direction direction) const {

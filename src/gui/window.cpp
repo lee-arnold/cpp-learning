@@ -6,6 +6,7 @@
 #include "chess/position.h"
 #include "gui/utils.h"
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -15,6 +16,7 @@
 #include <algorithm>
 #include <memory>
 #include <optional>
+#include <utility>
 #include <vector>
 
 namespace gui {
@@ -67,7 +69,7 @@ void Window::display() {
 void Window::draw_square(chess::Position position) {
     auto rect = sf::RectangleShape{};
     rect.setSize(sf::Vector2f(square_size, square_size));
-    rect.setFillColor(position.squareColour() == chess::Colour::Black ? dark : light);
+    rect.setFillColor(position.square_colour() == chess::Colour::Black ? dark : light);
 
     auto square_pos = square_position(position, board_);
 
@@ -78,26 +80,15 @@ void Window::draw_square(chess::Position position) {
 void Window::draw_piece(chess::Position position) {
     if (!board_.is_inside(position) || board_.is_empty(position)) return;
 
-    auto &piece = board_[position];
-
+    const auto *piece = board_[position];
     auto sprite = sprite_for(piece->type(), piece->colour());
-    auto sprite_bounds = sprite.getLocalBounds();
-    auto sprite_center = sf::Vector2f{
-        sprite_bounds.position.x + sprite_bounds.size.x / 2.0f,
-        sprite_bounds.position.y + sprite_bounds.size.y / 2.0f,
+    auto rect = sf::FloatRect{
+        square_position(position, board_),
+        sf::Vector2f{square_size, square_size},
     };
 
-    auto scale = icon_size / std::max(sprite_bounds.size.x, sprite_bounds.size.y);
+    fit_sprite_to_rect(sprite, rect);
 
-    auto square_pos = square_position(position, board_);
-    auto square_center = sf::Vector2f{
-        square_pos.x + square_size / 2.0f,
-        square_pos.y + square_size / 2.0f,
-    };
-
-    sprite.setOrigin(sprite_center);
-    sprite.setPosition(square_center);
-    sprite.setScale({scale, scale});
     window_.draw(sprite);
 }
 
@@ -129,11 +120,13 @@ void Window::draw_move_highlights(chess::Position position) {
 
 void Window::set_move_highlights(const std::vector<std::unique_ptr<chess::Move>> &moves) {
     std::vector<chess::Position> positions;
+    positions.reserve(moves.size());
+
     for (const auto &move : moves) {
         positions.push_back(move->to());
     }
 
-    move_highlights_ = positions;
+    move_highlights_ = std::move(positions);
 }
 
 void Window::clear_move_highlights() {

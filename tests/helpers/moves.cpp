@@ -23,7 +23,7 @@ void relocate_piece(
 }
 
 std::vector<chess::Position> get_destinations_for_piece(
-    const chess::GameState &game, const chess::Position from
+    const chess::GameState &game, chess::Position from
 ) {
     const auto moves = game.available_moves_for_piece(from);
 
@@ -36,7 +36,7 @@ std::vector<chess::Position> get_destinations_for_piece(
 }
 
 std::vector<chess::Position> get_source_positions_for_piece(
-    const chess::GameState &game, const chess::Position from
+    const chess::GameState &game, chess::Position from
 ) {
     const auto moves = game.available_moves_for_piece(from);
 

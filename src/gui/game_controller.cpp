@@ -60,7 +60,7 @@ void GameController::handle_event(const sf::Event &event) {
     }
 }
 
-void GameController::handle_board_click(const chess::Position &position) {
+void GameController::handle_board_click(chess::Position position) {
     if (!selected_square_) {
         // @TODO these need to be legal moves, not just available
         auto moves = game_state_.available_moves_for_piece(position);

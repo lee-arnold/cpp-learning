@@ -7,7 +7,8 @@
 
 namespace gui {
 
-Texture::Texture(const std::string_view filename) : texture_{} {
+Texture::Texture(std::string_view filename)
+    : texture_{} {
     if (!texture_.loadFromFile(filename)) {
         throw std::runtime_error(std::format("Failed to load texture: {}", filename));
     }

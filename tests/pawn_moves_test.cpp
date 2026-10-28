@@ -19,8 +19,10 @@
 
 using namespace test_squares;
 
+namespace {
+
 std::set<chess::PieceType> get_piece_types_for_promotion(
-    const std::vector<std::unique_ptr<chess::Move>> &moves, const chess::Position &position
+    const std::vector<std::unique_ptr<chess::Move>> &moves, chess::Position position
 ) {
     std::set<chess::PieceType> piece_types{};
 
@@ -33,6 +35,8 @@ std::set<chess::PieceType> get_piece_types_for_promotion(
     }
 
     return piece_types;
+}
+
 }
 
 TEST_CASE("An unmoved white pawn with a clear path can advance one or two squares") {

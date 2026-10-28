@@ -8,7 +8,7 @@ namespace gui {
 
 class Texture {
   public:
-    explicit Texture(const std::string_view filename);
+    explicit Texture(std::string_view filename);
 
     sf::Sprite get_sprite() const;
 

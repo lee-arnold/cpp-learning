@@ -6,6 +6,7 @@
 #include "chess/pieces/piece_type.h"
 #include "chess/position.h"
 #include <memory>
+#include <span>
 #include <vector>
 
 namespace chess {
@@ -25,10 +26,10 @@ class Piece {
     // protected prevents creation of random pieces outside of classes that inherit
     Piece(Colour colour, PieceType type);
     std::vector<std::unique_ptr<Move>> get_moves_in_direction(
-        const Position from, const Board &board, const Direction &direction
+        Position from, const Board &board, Direction direction
     ) const;
     std::vector<std::unique_ptr<Move>> get_moves_in_directions(
-        const Position from, const Board &board, const std::vector<Direction> &direction
+        Position from, const Board &board, std::span<const Direction> direction
     ) const;
 
   private:
@@ -36,12 +37,6 @@ class Piece {
     Colour colour_;
     PieceType type_;
     bool has_moved_{false};
-    std::vector<std::unique_ptr<Move>> get_moves_in_direction(
-        const Position from, const Board &board, const Direction direction
-    );
-    std::vector<std::unique_ptr<Move>> get_moves_in_directions(
-        const Position from, const Board &board, const std::vector<Direction> direction
-    );
 };
 
 }

@@ -17,8 +17,8 @@
 namespace {
 
 constexpr auto file_directions = std::array<chess::Direction, 2>{
-    chess::Direction::East(),
-    chess::Direction::West(),
+    chess::Direction::east(),
+    chess::Direction::west(),
 };
 
 }
@@ -27,7 +27,7 @@ namespace chess {
 
 Pawn::Pawn(Colour colour)
     : Piece{colour, PieceType::Pawn},
-      forward_{colour == Colour::White ? Direction::North() : Direction::South()} {
+      forward_{colour == Colour::White ? Direction::north() : Direction::south()} {
 }
 
 std::vector<std::unique_ptr<Move>> Pawn::get_moves(Position from, const Board &board) const {
@@ -43,19 +43,15 @@ std::vector<std::unique_ptr<Move>> Pawn::get_forward_moves(
     Position from, const Board &board
 ) const {
     std::vector<std::unique_ptr<Move>> moves;
-
     auto one_forward = from + forward_;
 
-    if (board.is_inside(one_forward) && board.is_empty(one_forward)) {
-        if (one_forward.rank() == 0 || one_forward.rank() == 7) {
-            moves.append_range(get_promotion_moves(from, one_forward) | std::views::as_rvalue);
-            return moves;
-        } else {
-            moves.push_back(std::make_unique<NormalMove>(from, one_forward));
-        }
-    } else {
-        return moves;
+    if (!board.is_inside(one_forward) || !board.is_empty(one_forward)) return moves;
+
+    if (one_forward.rank() == 0 || one_forward.rank() == 7) {
+        return get_promotion_moves(from, one_forward);
     }
+
+    moves.push_back(std::make_unique<NormalMove>(from, one_forward));
 
     auto two_forward = one_forward + forward_;
 

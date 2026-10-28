@@ -18,7 +18,7 @@ class PawnPromotionMove : public Move {
     PieceType piece_type() const;
 
   private:
-    const PieceType piece_type_;
+    PieceType piece_type_;
     std::unique_ptr<Piece> create_promotion_piece(Colour colour) const;
 };
 

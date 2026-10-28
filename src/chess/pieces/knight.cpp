@@ -14,12 +14,12 @@
 namespace {
 
 constexpr auto rank_directions = std::array<chess::Direction, 2>{
-    chess::Direction::North(),
-    chess::Direction::South(),
+    chess::Direction::north(),
+    chess::Direction::south(),
 };
 constexpr auto file_directions = std::array<chess::Direction, 2>{
-    chess::Direction::East(),
-    chess::Direction::West(),
+    chess::Direction::east(),
+    chess::Direction::west(),
 };
 
 }

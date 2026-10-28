@@ -8,6 +8,7 @@
 #include "chess/position.h"
 #include <memory>
 #include <ranges>
+#include <span>
 #include <vector>
 
 namespace chess {
@@ -34,7 +35,7 @@ void Piece::set_has_moved() {
 }
 
 std::vector<std::unique_ptr<Move>> Piece::get_moves_in_direction(
-    const Position from, const Board &board, const Direction &direction
+    Position from, const Board &board, Direction direction
 ) const {
     auto moves = std::vector<std::unique_ptr<Move>>{};
 
@@ -44,7 +45,7 @@ std::vector<std::unique_ptr<Move>> Piece::get_moves_in_direction(
             continue;
         }
 
-        auto &piece = board[position];
+        const auto *piece = board[position];
 
         if (piece->colour() != colour()) {
             moves.push_back(std::make_unique<NormalMove>(from, position));
@@ -57,7 +58,7 @@ std::vector<std::unique_ptr<Move>> Piece::get_moves_in_direction(
 }
 
 std::vector<std::unique_ptr<Move>> Piece::get_moves_in_directions(
-    const Position from, const Board &board, const std::vector<Direction> &directions
+    Position from, const Board &board, std::span<const Direction> directions
 ) const {
     auto moves = std::vector<std::unique_ptr<Move>>{};
 

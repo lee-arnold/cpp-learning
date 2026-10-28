@@ -33,6 +33,11 @@ If I explicitly delegate a low-learning-value task, such as writing repetitive d
 cases, do it. Otherwise preserve my chance to encounter compiler errors, make architectural choices,
 and implement the code myself.
 
+Prefer early returns and focused unnesting that make the main path easier to read. Use guard clauses
+for invalid or blocked cases and return special-case results directly where appropriate. Keep these
+changes local rather than introducing broad rewrites. Preserve necessary ordering, such as checking
+bounds before indexing, and remember that an early return or continue must not skip required work.
+
 ## Code reviews
 
 Inspect the repository, Git status, and actual diff before diagnosing or reviewing anything. Do not

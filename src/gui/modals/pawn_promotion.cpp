@@ -14,7 +14,6 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Angle.hpp>
 #include <SFML/System/Vector2.hpp>
-#include <algorithm>
 #include <cstddef>
 #include <optional>
 
@@ -55,7 +54,7 @@ void PawnPromotionModal::open(chess::Position position, chess::Colour colour) {
 
     int i = 0;
     auto direction =
-        colour == chess::Colour::Black ? chess::Direction::North() : chess::Direction::South();
+        colour == chess::Colour::Black ? chess::Direction::north() : chess::Direction::south();
 
     for (auto &element : *elements_) {
 
@@ -71,35 +70,19 @@ void PawnPromotionModal::draw(sf::RenderTarget &target) {
     if (!position_ || !elements_) return;
     const auto position = *position_;
     const auto direction =
-        colour_ == chess::Colour::Black ? chess::Direction::North() : chess::Direction::South();
+        colour_ == chess::Colour::Black ? chess::Direction::north() : chess::Direction::south();
 
     for (const auto &element : *elements_) {
-        auto square_pos = element.rect.position;
+        auto sprite = element.sprite;
+
+        fit_sprite_to_rect(sprite, element.rect);
 
         auto rect = sf::RectangleShape{};
         rect.setSize(element.rect.size);
         rect.setFillColor(sf::Color::White);
-        rect.setPosition(square_pos);
+        rect.setPosition(element.rect.position);
+
         target.draw(rect);
-
-        auto sprite = element.sprite;
-
-        auto sprite_bounds = sprite.getLocalBounds();
-        auto sprite_center = sf::Vector2f{
-            sprite_bounds.position.x + sprite_bounds.size.x / 2.0f,
-            sprite_bounds.position.y + sprite_bounds.size.y / 2.0f,
-        };
-
-        auto scale = icon_size / std::max(sprite_bounds.size.x, sprite_bounds.size.y);
-
-        auto square_center = sf::Vector2f{
-            square_pos.x + square_size / 2.0f,
-            square_pos.y + square_size / 2.0f,
-        };
-
-        sprite.setOrigin(sprite_center);
-        sprite.setPosition(square_center);
-        sprite.setScale({scale, scale});
         target.draw(sprite);
     }
 

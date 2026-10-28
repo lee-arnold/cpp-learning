@@ -133,21 +133,6 @@ add_custom_target(check_headers
   VERBATIM
 )
 
-# Apply the same warning options to both the application and the chess library.
-foreach(target IN ITEMS application chess)
-  # PRIVATE applies these flags to this target's compilation without propagating them.
-  target_compile_options(${target} PRIVATE
-    -Wall                 # Enable a broad set of common warnings (not every warning).
-    -Wextra               # Enable additional warnings beyond -Wall.
-    -Wpedantic            # Warn about extensions outside the selected C++ standard.
-    -Wconversion          # Warn about implicit conversions that may change values.
-    -Wsign-conversion     # Warn about implicit signed/unsigned conversions.
-    -Wunused-parameter    # Warn when a function parameter is unused.
-    -Wshadow              # Warn when a declaration hides another declaration.
-    -Wmissing-prototypes  # Warn about applicable functions without prior declarations.
-  )
-# End the loop over the two targets.
-endforeach()
 
 # Allow application sources to include headers relative to src.
 target_include_directories(application PRIVATE
@@ -164,6 +149,25 @@ file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS
 
 # Build all test files into one executable using Catch2's main().
 add_executable(chess_tests ${TEST_SOURCES})
+
+# Use Catch2's standard __LINE__ fallback instead of the __COUNTER__ extension.
+target_compile_definitions(chess_tests PRIVATE CATCH_CONFIG_NO_COUNTER)
+
+# Apply the same warning options to the application, chess library, and tests.
+foreach(target IN ITEMS application chess chess_tests)
+  # PRIVATE applies these flags to this target's compilation without propagating them.
+  target_compile_options(${target} PRIVATE
+    -Wall                 # Enable a broad set of common warnings (not every warning).
+    -Wextra               # Enable additional warnings beyond -Wall.
+    -Wpedantic            # Warn about extensions outside the selected C++ standard.
+    -Wconversion          # Warn about implicit conversions that may change values.
+    -Wsign-conversion     # Warn about implicit signed/unsigned conversions.
+    -Wunused-parameter    # Warn when a function parameter is unused.
+    -Wshadow              # Warn when a declaration hides another declaration.
+    -Wmissing-prototypes  # Warn about applicable functions without prior declarations.
+  )
+# End the loop over the three targets.
+endforeach()
 
 # Supply chess implementations and Catch2's assertions, test runner, and main().
 target_link_libraries(chess_tests PRIVATE chess Catch2::Catch2WithMain)

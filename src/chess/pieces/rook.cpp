@@ -6,23 +6,29 @@
 #include "chess/pieces/piece.h"
 #include "chess/pieces/piece_type.h"
 #include "chess/position.h"
+#include <array>
 #include <memory>
 #include <vector>
+
+namespace {
+
+constexpr auto directions = std::array<chess::Direction, 4>{
+    chess::Direction::north(),
+    chess::Direction::east(),
+    chess::Direction::south(),
+    chess::Direction::west(),
+};
+
+}
 
 namespace chess {
 
 Rook::Rook(Colour colour)
-    : Piece{colour, PieceType::Rook},
-      directions_{std::vector<Direction>{
-          Direction::North(),
-          Direction::East(),
-          Direction::South(),
-          Direction::West(),
-      }} {
+    : Piece{colour, PieceType::Rook} {
 }
 
 std::vector<std::unique_ptr<Move>> Rook::get_moves(Position from, const Board &board) const {
-    return get_moves_in_directions(from, board, directions_);
+    return get_moves_in_directions(from, board, directions);
 }
 
 }

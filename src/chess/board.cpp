@@ -10,6 +10,7 @@
 #include "chess/position.h"
 
 #include <array>
+#include <cassert>
 #include <cstddef>
 #include <memory>
 
@@ -59,22 +60,15 @@ void Board::initialise() {
 // this duplication is annoying. it can be neatened up with decltype
 // but thats way too advanced for this simple project. maybe later
 
-std::array<std::unique_ptr<Piece>, 8> &Board::operator[](int rank) {
-    return board_[static_cast<std::size_t>(rank)];
-}
-
-const std::array<std::unique_ptr<Piece>, 8> &Board::operator[](int rank) const {
-    return board_[static_cast<std::size_t>(rank)];
-}
-
 std::unique_ptr<Piece> &Board::operator[](Position position) {
     return board_[static_cast<std::size_t>(position.rank())]
                  [static_cast<std::size_t>(position.file())];
 }
 
-const std::unique_ptr<Piece> &Board::operator[](Position position) const {
+const Piece *Board::operator[](Position position) const {
     return board_[static_cast<std::size_t>(position.rank())]
-                 [static_cast<std::size_t>(position.file())];
+                 [static_cast<std::size_t>(position.file())]
+                     .get();
 }
 
 bool Board::is_empty(Position position) const {
@@ -82,6 +76,8 @@ bool Board::is_empty(Position position) const {
     // overloard is on Board
     // Instead, we can use `this` to access the current object, but we need to access (dereference)
     // the pointer that this points to in order to use our overload
+
+    assert(is_inside(position) && "Board::is_empty requires an in-bounds position");
     return !(*this)[position];
 }
 

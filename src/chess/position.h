@@ -22,7 +22,7 @@ class Position {
         return file_;
     }
 
-    constexpr Colour squareColour() const {
+    constexpr Colour square_colour() const {
         return is_even(rank_ + file_) ? Colour::Black : Colour::White;
     }
 
@@ -30,7 +30,7 @@ class Position {
     // compare this position against another existing position without copying or modifying either
     constexpr bool operator==(const Position &) const = default;
 
-    constexpr Position &operator+=(const Direction &direction) {
+    constexpr Position &operator+=(Direction direction) {
         rank_ += direction.rank_delta();
         file_ += direction.file_delta();
 
@@ -42,7 +42,7 @@ class Position {
     int file_;
 };
 
-constexpr Position operator+(Position position, const Direction &direction) {
+constexpr Position operator+(Position position, Direction direction) {
     position += direction;
     return position;
 }

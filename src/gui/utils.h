@@ -5,6 +5,8 @@
 #include "chess/pieces/piece_type.h"
 #include "chess/position.h"
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <array>
 #include <string_view>
@@ -35,11 +37,13 @@ constexpr std::array assets = {
 constexpr auto light = sf::Color{235, 236, 208};
 constexpr auto dark = sf::Color{115, 149, 82};
 constexpr auto square_size = 100.0f;
-constexpr auto icon_size = square_size * 0.8f;
-const auto selected_square_outline = 2.0f;
+constexpr auto icon_fill_ratio = 0.8f;
+constexpr auto selected_square_outline = 2.0f;
 constexpr auto close_icon_stroke_length = square_size * 0.3f;
 constexpr auto close_icon_stroke_thickness = 3.0f;
 
 sf::Vector2f square_position(chess::Position position, const chess::Board &board);
+
+void fit_sprite_to_rect(sf::Sprite &sprite, sf::FloatRect rect);
 
 }

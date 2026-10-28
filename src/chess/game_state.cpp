@@ -18,9 +18,7 @@ Colour GameState::current_player() const {
     return current_player_;
 }
 
-std::vector<std::unique_ptr<Move>> GameState::available_moves_for_piece(
-    const Position position
-) const {
+std::vector<std::unique_ptr<Move>> GameState::available_moves_for_piece(Position position) const {
     if (!board_.is_inside(position) ||
         board_.is_empty(position) ||
         board_[position]->colour() != current_player_) {
@@ -35,7 +33,7 @@ std::vector<std::unique_ptr<Move>> GameState::available_moves_for_piece(
 
 void GameState::execute_move(const Move &move) {
     move.execute(board_);
-    current_player_ = Player::opponent(current_player_);
+    current_player_ = opponent(current_player_);
 }
 
 };

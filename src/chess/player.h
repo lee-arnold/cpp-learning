@@ -6,18 +6,15 @@
 
 namespace chess {
 
-class Player {
-  public:
-    static Colour opponent(Colour colour) {
-        switch (colour) {
-            case Colour::White:
-                return Colour::Black;
-            case Colour::Black:
-                return Colour::White;
-            default:
-                throw std::runtime_error("Unrecognised player colour");
-        }
+constexpr Colour opponent(Colour colour) {
+    switch (colour) {
+        case Colour::White:
+            return Colour::Black;
+        case Colour::Black:
+            return Colour::White;
+        default:
+            throw std::runtime_error("Unrecognised player colour");
     }
-};
+}
 
 }
