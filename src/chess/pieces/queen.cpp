@@ -35,4 +35,8 @@ std::vector<std::unique_ptr<Move>> Queen::get_moves(Position from, const Board &
     return get_moves_in_directions(from, board, directions);
 }
 
+std::unique_ptr<Piece> Queen::copy() const {
+    return std::make_unique<Queen>(*this);
+}
+
 }

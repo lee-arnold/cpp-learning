@@ -102,4 +102,8 @@ std::vector<std::unique_ptr<Move>> Pawn::get_promotion_moves(Position from, Posi
     return moves;
 }
 
+std::unique_ptr<Piece> Pawn::copy() const {
+    return std::make_unique<Pawn>(*this);
+}
+
 }

@@ -26,9 +26,11 @@ std::vector<std::unique_ptr<Move>> GameState::available_moves_for_piece(Position
     }
 
     auto &piece = board_[position];
+    auto moves = piece->get_moves(position, board_);
 
-    // TODO: filter out moves that leave our king in check
-    return piece->get_moves(position, board_);
+    std::erase_if(moves, [this](auto &move) { return !move->is_legal(board_); });
+
+    return moves;
 }
 
 void GameState::execute_move(const Move &move) {

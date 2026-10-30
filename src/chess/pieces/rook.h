@@ -13,6 +13,7 @@ class Rook : public Piece {
   public:
     explicit Rook(Colour colour);
     std::vector<std::unique_ptr<Move>> get_moves(Position from, const Board &board) const override;
+    std::unique_ptr<Piece> copy() const override;
 };
 
 }

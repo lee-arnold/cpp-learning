@@ -69,4 +69,13 @@ std::vector<std::unique_ptr<Move>> Piece::get_moves_in_directions(
     return moves;
 }
 
+bool Piece::can_capture_opponent_king(Position from, const Board &board) const {
+    for (const auto &move : get_moves(from, board)) {
+        auto piece = board[move->to()];
+        if (piece && piece->type() == PieceType::King) return true;
+    }
+
+    return false;
+}
+
 }

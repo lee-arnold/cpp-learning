@@ -2,7 +2,9 @@
 
 #include <array>
 #include <memory>
+#include <vector>
 
+#include "chess/colour.h"
 #include "chess/pieces/piece.h"
 #include "chess/position.h"
 
@@ -28,11 +30,18 @@ class Board {
     // the compiler chooses which based on whether the board itself is const
     std::unique_ptr<Piece> &operator[](Position position);
     const Piece *operator[](Position position) const;
+    bool is_in_check(Colour player) const;
+    Board copy() const;
 
   private:
+    struct Empty {};
+
+    explicit Board(Empty);
     void initialise();
     // prefer this over board_[8][8]
     std::array<std::array<std::unique_ptr<Piece>, 8>, 8> board_;
+    std::vector<Position> piece_positions() const;
+    std::vector<Position> piece_positions_for(Colour player) const;
 };
 
 }

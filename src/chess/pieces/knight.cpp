@@ -53,4 +53,8 @@ std::vector<std::unique_ptr<Move>> Knight::get_moves(Position from, const Board 
     return moves;
 }
 
+std::unique_ptr<Piece> Knight::copy() const {
+    return std::make_unique<Knight>(*this);
+}
+
 }

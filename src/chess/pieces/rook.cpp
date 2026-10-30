@@ -31,4 +31,8 @@ std::vector<std::unique_ptr<Move>> Rook::get_moves(Position from, const Board &b
     return get_moves_in_directions(from, board, directions);
 }
 
+std::unique_ptr<Piece> Rook::copy() const {
+    return std::make_unique<Rook>(*this);
+}
+
 }

@@ -31,4 +31,8 @@ std::vector<std::unique_ptr<Move>> Bishop::get_moves(Position position, const Bo
     return get_moves_in_directions(position, board, directions);
 }
 
+std::unique_ptr<Piece> Bishop::copy() const {
+    return std::make_unique<Bishop>(*this);
+}
+
 }

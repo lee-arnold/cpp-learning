@@ -20,7 +20,9 @@ class Piece {
     virtual std::vector<std::unique_ptr<Move>> get_moves(
         Position from, const Board &board
     ) const = 0;
+    virtual std::unique_ptr<Piece> copy() const = 0;
     virtual ~Piece() = default;
+    bool can_capture_opponent_king(Position from, const Board &board) const;
 
   protected:
     // protected prevents creation of random pieces outside of classes that inherit

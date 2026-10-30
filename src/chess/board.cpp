@@ -7,17 +7,22 @@
 #include "chess/pieces/piece.h"
 #include "chess/pieces/queen.h"
 #include "chess/pieces/rook.h"
+#include "chess/player.h"
 #include "chess/position.h"
 
 #include <array>
 #include <cassert>
 #include <cstddef>
 #include <memory>
+#include <vector>
 
 namespace chess {
 
 Board::Board() {
     initialise();
+}
+
+Board::Board(Empty) {
 }
 
 void Board::initialise() {
@@ -79,6 +84,50 @@ bool Board::is_empty(Position position) const {
 
     assert(is_inside(position) && "Board::is_empty requires an in-bounds position");
     return !(*this)[position];
+}
+
+std::vector<Position> Board::piece_positions() const {
+    auto positions = std::vector<Position>{};
+
+    for (int rank = 0; rank < 8; rank++) {
+        for (int file = 0; file < 8; file++) {
+            Position pos = Position(rank, file);
+            if (!is_empty(pos)) positions.push_back(pos);
+        }
+    }
+
+    return positions;
+}
+
+std::vector<Position> Board::piece_positions_for(Colour player) const {
+    auto positions = piece_positions();
+
+    std::erase_if(positions, [this, player](auto position) {
+        return (*this)[position]->colour() != player;
+    });
+
+    return positions;
+}
+
+bool Board::is_in_check(Colour player) const {
+    auto positions = piece_positions_for(opponent(player));
+
+    for (auto &position : positions) {
+        auto piece = (*this)[position];
+        if (piece->can_capture_opponent_king(position, *this)) return true;
+    }
+
+    return false;
+}
+
+Board Board::copy() const {
+    auto copy = Board{Empty{}};
+
+    for (auto &position : piece_positions()) {
+        copy[position] = (*this)[position]->copy();
+    }
+
+    return copy;
 }
 
 }

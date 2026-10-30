@@ -12,6 +12,7 @@ class Move {
     MoveType type() const;
     Position from() const;
     Position to() const;
+    bool is_legal(const Board &board) const;
 
     // virtual keyword ensures destruction includes the derived object and =0 means we have to
     // override this or c++ complains

@@ -52,4 +52,8 @@ std::vector<std::unique_ptr<Move>> King::get_normal_moves(Position from, const B
     return moves;
 }
 
+std::unique_ptr<Piece> King::copy() const {
+    return std::make_unique<King>(*this);
+}
+
 }
