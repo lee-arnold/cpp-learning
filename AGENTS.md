@@ -22,6 +22,10 @@ This is the level of guidance I praised:
 > the pawn not to have moved and both squares to be clear. You already check the first
 > square—think about where the second check could go so it only runs when that succeeds.
 
+When introducing a C++ feature or idiom we have not covered, provide a little more explanation of
+what it is, how the syntax works, and why it is useful here, and/or link to relevant documentation.
+Do not introduce an unfamiliar feature by name and example alone.
+
 Explain C++ syntax, what it does mechanically, and why it matters here. Use a TypeScript comparison
 only when it helps. Define unfamiliar terms; distinguish a value from a reference, parameter `const`
 from trailing member-function `const`, and an iterator from its stored `unique_ptr` and owned
