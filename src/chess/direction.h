@@ -57,6 +57,8 @@ class Direction {
         return Direction{rank_delta_ * scalar, file_delta_ * scalar};
     }
 
+    constexpr bool operator==(const Direction &) const = default;
+
   private:
     int rank_delta_;
     int file_delta_;

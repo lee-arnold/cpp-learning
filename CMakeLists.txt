@@ -48,12 +48,12 @@ FetchContent_Declare(Catch2
 FetchContent_MakeAvailable(Catch2)
 
 # Run clang-tidy when compiling our subsequently created targets.
-# Disable other checks, enable include-cleaner, and make its findings build errors.
+# Check include usage and explicit constructors, treating findings as build errors.
 # This comes after dependency setup so their targets do not inherit this command.
 set(CMAKE_CXX_CLANG_TIDY
   clang-tidy
-  --checks=-*,misc-include-cleaner
-  --warnings-as-errors=misc-include-cleaner
+  --checks=-*,misc-include-cleaner,google-explicit-constructor
+  --warnings-as-errors=misc-include-cleaner,google-explicit-constructor
 )
 
 # Homebrew clang-tidy does not automatically inherit Apple Clang's SDK path.
